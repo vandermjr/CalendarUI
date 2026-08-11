@@ -1,0 +1,147 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:CalendarUI.Avalonia.Controls.Calendar"
+        xmlns:month="using:CalendarUI.Avalonia.Controls.MonthView">
+
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <local:Calendar Width="900" Height="600" />
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- ESTILOS DO INDICADOR DE HOJE (CÍRCULO AZUL) -->
+    <Style Selector="Border.today">
+        <Setter Property="Background" Value="#1A73E8" />
+    </Style>
+    <Style Selector="Border.today TextBlock">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style Selector="local|Calendar">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="local:Calendar">
+                <Grid ColumnDefinitions="Auto,*" Margin="10" UseLayoutRounding="True">
+
+                    <!-- 1. MINI CALENDÁRIO À ESQUERDA -->
+                    <month:MonthView x:Name="PART_MonthView"
+                                     Grid.Column="0"
+                                     Margin="0,0,15,0"
+                                     VerticalAlignment="Top"
+                                     IsVisible="{TemplateBinding IsMonthViewVisible}" />
+
+                    <!-- 2. ÁREA PRINCIPAL DO CALENDÁRIO -->
+                    <Border Grid.Column="1"
+                            BorderBrush="{DynamicResource CalendarGridLineBrush}"
+                            BorderThickness="1">
+                        
+                        <Grid>
+                            <!-- MODO EXPANDED (VISÃO DE HORÁRIOS) -->
+                            <Grid RowDefinitions="Auto,*"
+                                IsVisible="{Binding DaysMode, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static local:CalendarDaysMode.Expanded}}">
+                                
+                                <!-- CABEÇALHO DOS DIAS -->
+                                <Border Grid.Row="0"
+                                        BorderBrush="{DynamicResource CalendarGridLineBrush}" 
+                                        BorderThickness="0,0,0,1">
+                                    <Grid ColumnDefinitions="60,*">
+                                        <Border Grid.Column="0"
+                                                BorderBrush="{DynamicResource CalendarGridLineBrush}"
+                                                BorderThickness="0,0,1,0" />
+
+                                        <ItemsControl Grid.Column="1" 
+                                                    Height="56"
+                                                    ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}}">
+                                            
+                                            <ItemsControl.Styles>
+                                                <!-- Define a borda direita para todos os dias por padrão -->
+                                                <Style Selector="ContentPresenter > Border.DayHeaderBorder">
+                                                    <Setter Property="BorderThickness" Value="0,0,1,0" />
+                                                </Style>
+                                                
+                                                <!-- Remove a borda apenas do último dia (SÁB) -->
+                                                <Style Selector="ContentPresenter:nth-last-child(1) > Border.DayHeaderBorder">
+                                                    <Setter Property="BorderThickness" Value="0" />
+                                                </Style>
+                                            </ItemsControl.Styles>
+
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Columns="{Binding Days.Count, RelativeSource={RelativeSource AncestorType={x:Type local:Calendar}}}" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="local:CalendarDayModel">
+                                                    <!-- Usamos Classes em vez de definir BorderThickness diretamente -->
+                                                    <Border Classes="DayHeaderBorder"
+                                                            BorderBrush="{DynamicResource CalendarGridLineBrush}" 
+                                                            Padding="4">
+                                                        <StackPanel HorizontalAlignment="Center" 
+                                                                    VerticalAlignment="Center" 
+                                                                    Spacing="4">
+                                                            
+                                                            <TextBlock Text="{Binding DayOfWeekName}" 
+                                                                    HorizontalAlignment="Center" 
+                                                                    FontWeight="SemiBold" 
+                                                                    FontSize="11" 
+                                                                    Foreground="{DynamicResource CalendarTextSecondaryBrush}" />
+                                                            
+                                                            <Border Width="28"
+                                                                    Height="28"
+                                                                    CornerRadius="14"
+                                                                    HorizontalAlignment="Center"
+                                                                    VerticalAlignment="Center"
+                                                                    Classes.today="{Binding IsToday}">
+                                                                <TextBlock Text="{Binding Date.Day}" 
+                                                                        HorizontalAlignment="Center" 
+                                                                        VerticalAlignment="Center" 
+                                                                        FontSize="13" 
+                                                                        FontWeight="SemiBold"
+                                                                        Foreground="{DynamicResource CalendarTextSecondaryBrush}" />
+                                                            </Border>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </Border>
+
+                                <ScrollViewer x:Name="PART_ScrollViewer"
+                                            Grid.Row="1"
+                                            HorizontalScrollBarVisibility="Disabled"
+                                            VerticalScrollBarVisibility="Hidden">
+                                    <local:CalendarDayPanel ViewStart="{TemplateBinding ViewStart}"
+                                                            ViewEnd="{TemplateBinding ViewEnd}"
+                                                            ItemsSource="{TemplateBinding ItemsSource}"
+                                                            GridBackgroundBrush="{DynamicResource CalendarBackgroundBrush}"
+                                                            LineBrush="{DynamicResource CalendarGridLineBrush}"
+                                                            TextBrush="{DynamicResource CalendarTextSecondaryBrush}" />
+                                </ScrollViewer>
+                            </Grid>
+
+                            <!-- MODO SHORT (RESUMIDO / VISÃO MENSAL) -->
+                            <Grid RowDefinitions="*" ColumnDefinitions="*"
+                                IsVisible="{Binding DaysMode, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static local:CalendarDaysMode.Short}}">
+
+                                <local:CalendarMonthPanel Grid.Row="0" Grid.Column="0"
+                                                        ViewStart="{TemplateBinding ViewStart}"
+                                                        ViewEnd="{TemplateBinding ViewEnd}"
+                                                        ItemsSource="{TemplateBinding ItemsSource}"
+                                                        GridBackgroundBrush="{DynamicResource CalendarBackgroundBrush}"
+                                                        RulerBackgroundBrush="{DynamicResource CalendarRulerBackgroundBrush}"
+                                                        LineBrush="{DynamicResource CalendarGridLineBrush}"
+                                                        TextBrush="{DynamicResource CalendarTextPrimaryBrush}"
+                                                        TodayBrush="{DynamicResource CalendarTodayBrush}" />
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+</Styles>

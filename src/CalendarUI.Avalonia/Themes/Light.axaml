@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Fundo externo e réguas -->
+    <SolidColorBrush x:Key="CalendarBackgroundBrush" Color="#F8F9FA" />
+    <SolidColorBrush x:Key="CalendarHeaderBackgroundBrush" Color="#F8F9FA" />
+    <SolidColorBrush x:Key="CalendarHeaderBorderBrush" Color="#E0E0E0" />
+    
+    <!-- Fundo do Cartão da Grade do Calendário -->
+    <SolidColorBrush x:Key="CalendarSurfaceBrush" Color="#FFFFFF" />
+    
+    <!-- Textos e Bordas -->
+    <SolidColorBrush x:Key="CalendarTextPrimaryBrush" Color="#3C4043" />
+    <SolidColorBrush x:Key="CalendarTextSecondaryBrush" Color="#70757A" />
+    <SolidColorBrush x:Key="CalendarButtonHoverBrush" Color="#F1F3F4" />
+    <SolidColorBrush x:Key="CalendarButtonPressedBrush" Color="#E8EAED" />
+    <SolidColorBrush x:Key="CalendarGridLineBrush" Color="#E0E0E0" />
+    <SolidColorBrush x:Key="CalendarBorderBrush" Color="#E0E0E0" />
+
+    <!-- MonthView / Mini-Calendar -->
+    <SolidColorBrush x:Key="MonthViewTodayBackgroundBrush" Color="#1A73E8" />
+    <SolidColorBrush x:Key="MonthViewTodayForegroundBrush" Color="#FFFFFF" />
+
+    <SolidColorBrush x:Key="MonthViewSelectionCurrentMonthBrush" Color="#C2E7FF" />
+    <SolidColorBrush x:Key="MonthViewSelectionOtherMonthBrush" Color="#E1E3E1" />
+
+    <SolidColorBrush x:Key="MonthViewTextPrimaryBrush" Color="#1F1F1F" />
+    <SolidColorBrush x:Key="MonthViewTextSecondaryBrush" Color="#70757A" />
+</ResourceDictionary>

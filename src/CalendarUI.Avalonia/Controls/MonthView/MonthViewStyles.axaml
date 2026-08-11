@@ -1,0 +1,158 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CalendarUI.Avalonia.Controls.MonthView">
+
+    <Style Selector="local|MonthView">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="local:MonthView">
+                <Border Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        CornerRadius="0"
+                        Padding="4"
+                        HorizontalAlignment="Left">
+                    
+                    <StackPanel Spacing="6">
+                        <!-- Cabeçalho -->
+                        <Grid ColumnDefinitions="*, Auto, Auto" Margin="2,0,2,4">
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding DisplayDateFormatted, RelativeSource={RelativeSource TemplatedParent}}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontWeight="SemiBold"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource CalendarTextPrimaryBrush}" />
+
+                            <Button x:Name="PART_PreviousButton"
+                                    Grid.Column="1"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="0"
+                                    Margin="0,0,2,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Cursor="Hand">
+                                <Path Data="M 6 0 L 0 5 L 6 10"
+                                      Stroke="{DynamicResource CalendarTextSecondaryBrush}"
+                                      StrokeThickness="1.5"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" />
+                            </Button>
+
+                            <Button x:Name="PART_NextButton"
+                                    Grid.Column="2"
+                                    Width="24"
+                                    Height="24"
+                                    Padding="0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Cursor="Hand">
+                                <Path Data="M 0 0 L 6 5 L 0 10"
+                                      Stroke="{DynamicResource CalendarTextSecondaryBrush}"
+                                      StrokeThickness="1.5"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" />
+                            </Button>
+                        </Grid>
+
+                        <!-- Dias da Semana Dinâmicos -->
+                        <ItemsControl ItemsSource="{Binding DayNames, RelativeSource={RelativeSource TemplatedParent}}" Margin="0,2,0,4">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="7" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" 
+                                            HorizontalAlignment="Center" 
+                                            FontSize="11" 
+                                            FontWeight="SemiBold" 
+                                            Foreground="{DynamicResource CalendarTextSecondaryBrush}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Grade de Dias -->
+                        <ItemsControl x:Name="PART_DaysGrid">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="7" Rows="6" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="local:MonthViewDayViewModel">
+                                    <!-- Border com as Classes Dinâmicas vinculadas às propriedades booleanas -->
+                                    <Border x:Name="PART_DayBorder"
+                                            Width="27"
+                                            Height="27"
+                                            Margin="1"
+                                            CornerRadius="14"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Cursor="Hand"
+                                            Classes.today="{Binding IsToday}"
+                                            Classes.selected="{Binding IsSelected}"
+                                            Classes.other-month="{Binding !IsCurrentMonth}">
+                                        <TextBlock x:Name="PART_DayText"
+                                                   Text="{Binding DayNumber}"
+                                                   FontSize="11"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   IsHitTestVisible="False" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================= -->
+    <!-- ESTILOS BASEADOS EM CLASSES CSS                                  -->
+    <!-- ================================================================= -->
+
+    <!-- 1. Estado Padrão (Dia normal do Mês Atual) -->
+    <Style Selector="Border#PART_DayBorder">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="Border#PART_DayBorder TextBlock#PART_DayText">
+        <Setter Property="Foreground" Value="{DynamicResource MonthViewTextPrimaryBrush}" />
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+
+    <!-- 2. Dias de Outros Meses (Atenuados) -->
+    <Style Selector="Border#PART_DayBorder.other-month TextBlock#PART_DayText">
+        <Setter Property="Foreground" Value="{DynamicResource MonthViewTextSecondaryBrush}" />
+    </Style>
+
+    <!-- 3. Seleção: Mês Atual (Faixa Azul Claro) -->
+    <Style Selector="Border#PART_DayBorder.selected">
+        <Setter Property="Background" Value="{DynamicResource MonthViewSelectionCurrentMonthBrush}" />
+    </Style>
+    <Style Selector="Border#PART_DayBorder.selected TextBlock#PART_DayText">
+        <Setter Property="Foreground" Value="{DynamicResource MonthViewTextPrimaryBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!-- 4. Seleção: Outro Mês (Faixa Cinza Claro) -->
+    <Style Selector="Border#PART_DayBorder.selected.other-month">
+        <Setter Property="Background" Value="{DynamicResource MonthViewSelectionOtherMonthBrush}" />
+    </Style>
+    <Style Selector="Border#PART_DayBorder.selected.other-month TextBlock#PART_DayText">
+        <Setter Property="Foreground" Value="{DynamicResource MonthViewTextSecondaryBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!-- 5. O DIA ATUAL (TODAY) - SOBREPOSIÇÃO E PRIORIDADE MÁXIMA -->
+    <Style Selector="Border#PART_DayBorder.today">
+        <Setter Property="Background" Value="{DynamicResource MonthViewTodayBackgroundBrush}" />
+    </Style>
+    <Style Selector="Border#PART_DayBorder.today TextBlock#PART_DayText">
+        <Setter Property="Foreground" Value="{DynamicResource MonthViewTodayForegroundBrush}" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+</Styles>

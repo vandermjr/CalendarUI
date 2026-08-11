@@ -1,0 +1,12 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="CalendarBackgroundBrush" Color="#0F172A" />
+    <SolidColorBrush x:Key="CalendarHeaderBackgroundBrush" Color="#1E293B" />
+    <SolidColorBrush x:Key="CalendarHeaderBorderBrush" Color="#334155" />
+    <SolidColorBrush x:Key="CalendarTextPrimaryBrush" Color="#F8FAFC" />
+    <SolidColorBrush x:Key="CalendarTextSecondaryBrush" Color="#94A3B8" />
+    <SolidColorBrush x:Key="CalendarButtonHoverBrush" Color="#334155" />
+    <SolidColorBrush x:Key="CalendarButtonPressedBrush" Color="#475569" />
+    <SolidColorBrush x:Key="CalendarGridLineBrush" Color="#1E293B" />
+    <SolidColorBrush x:Key="CalendarBorderBrush" Color="#334155" />
+</ResourceDictionary>

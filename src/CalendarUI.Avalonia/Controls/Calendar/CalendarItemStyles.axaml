@@ -1,0 +1,92 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:CalendarUI.Avalonia.Controls.Calendar">
+
+    <Styles.Resources>
+        <local:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+    </Styles.Resources>
+
+    <Style Selector="local|CalendarItemControl">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="local:CalendarItemControl" x:DataType="local:ICalendarItem">
+                <Border Margin="2,1"
+                        CornerRadius="3"
+                        ClipToBounds="True"
+                        Background="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                        BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                        BorderThickness="1"
+                        BoxShadow="0 1 2 0 #15000000"
+                        ToolTip.ShowDelay="200">
+
+                    <!-- ToolTip -->
+                    <ToolTip.Tip>
+                        <Border CornerRadius="8"
+                                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                BorderThickness="1"
+                                Padding="12,10"
+                                BoxShadow="0 4 12 0 #33000000"
+                                MaxWidth="300">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{Binding Text}"
+                                           FontWeight="Bold"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                           TextWrapping="Wrap" />
+
+                                <Separator Background="{DynamicResource SystemControlForegroundBaseLowBrush}" Height="1" Margin="0,2" />
+
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <TextBlock Text="Data:" 
+                                               FontWeight="SemiBold" 
+                                               FontSize="11" 
+                                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" 
+                                               Margin="0,0,8,0" />
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding DateStart, StringFormat='{}{0:dd/MM/yyyy (dddd)}'}"
+                                               FontSize="11" 
+                                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+                                </Grid>
+
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <TextBlock Text="Horário:" 
+                                               FontWeight="SemiBold" 
+                                               FontSize="11" 
+                                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" 
+                                               Margin="0,0,8,0" />
+                                    <TextBlock Grid.Column="1" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0:HH:mm} às {1:HH:mm}">
+                                                <Binding Path="DateStart" />
+                                                <Binding Path="DateEnd" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </ToolTip.Tip>
+
+                    <!-- Conteúdo do Card -->
+                    <Grid ColumnDefinitions="3, *">
+                        <!-- Barra Lateral Esquerda (Preta) -->
+                        <Border Grid.Column="0" 
+                                Background="Black" />
+
+                        <!-- Título do Compromisso -->
+                        <TextBlock Grid.Column="1" 
+                                   Text="{Binding Text}"
+                                   FontWeight="SemiBold"
+                                   FontSize="11"
+                                   Foreground="{Binding ForeColor, Converter={StaticResource ColorToBrushConverter}}"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="NoWrap"
+                                   TextTrimming="CharacterEllipsis" 
+                                   Margin="4,1,4,1"/>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+</Styles>

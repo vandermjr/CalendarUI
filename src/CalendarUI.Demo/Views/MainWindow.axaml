@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CalendarUI.Demo.ViewModels"
+        xmlns:cal="using:CalendarUI.Avalonia.Controls.Calendar"
+        x:Class="CalendarUI.Demo.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="Winforms Calendar - Avalonia UI Demo"
+        Width="1000" Height="700"
+        Background="{DynamicResource CalendarBackgroundBrush}">
+
+    <DockPanel Margin="16">
+        <!-- Header -->
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+            <ToggleSwitch DockPanel.Dock="Right"
+                          IsChecked="{Binding IsDarkTheme}"
+                          OnContent="Dark"
+                          OffContent="Light" />
+
+            <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                <Button Command="{Binding ToggleSidebarCommand}"
+                        Background="Transparent"
+                        Padding="8"
+                        BorderThickness="0">
+                    <PathIcon Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" 
+                              Foreground="{DynamicResource CalendarTextPrimaryBrush}"/>
+                </Button>
+                <TextBlock Text="Agenda" 
+                           FontSize="20" 
+                           FontWeight="SemiBold" 
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource CalendarTextPrimaryBrush}"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!-- Calendário com Binding TwoWay -->
+        <cal:Calendar x:Name="PART_Calendar"
+              ItemsSource="{Binding Appointments}"
+              ViewStart="{Binding ViewStart, Mode=TwoWay}"
+              ViewEnd="{Binding ViewEnd, Mode=TwoWay}"
+              IsMonthViewVisible="{Binding IsSidebarOpen}" />
+    </DockPanel>
+</Window>
