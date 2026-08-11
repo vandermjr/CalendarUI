@@ -4,14 +4,14 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
-                <ResourceInclude x:Key="Light" Source="avares://WinformsCalendar.Avalonia/Themes/Light.axaml" />
-                <ResourceInclude x:Key="Dark" Source="avares://WinformsCalendar.Avalonia/Themes/Dark.axaml" />
+                <ResourceInclude x:Key="Light" Source="avares://CalendarUI.Avalonia/Themes/Light.axaml" />
+                <ResourceInclude x:Key="Dark" Source="avares://CalendarUI.Avalonia/Themes/Dark.axaml" />
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
 
     <!-- Inclusão dos Estilos dos Controles -->
-    <StyleInclude Source="avares://WinformsCalendar.Avalonia/Controls/Calendar/CalendarItemStyles.axaml"/>
-    <StyleInclude Source="avares://WinformsCalendar.Avalonia/Controls/Calendar/CalendarStyles.axaml"/>
-    <StyleInclude Source="avares://WinformsCalendar.Avalonia/Controls/MonthView/MonthViewStyles.axaml" />
+    <StyleInclude Source="avares://CalendarUI.Avalonia/Controls/Calendar/CalendarItemStyles.axaml"/>
+    <StyleInclude Source="avares://CalendarUI.Avalonia/Controls/Calendar/CalendarStyles.axaml"/>
+    <StyleInclude Source="avares://CalendarUI.Avalonia/Controls/MonthView/MonthViewStyles.axaml" />
 </Styles>
