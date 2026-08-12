@@ -11,10 +11,10 @@
 
     <!-- ESTILOS DO INDICADOR DE HOJE (CÍRCULO AZUL) -->
     <Style Selector="Border.today">
-        <Setter Property="Background" Value="#1A73E8" />
+        <Setter Property="Background" Value="{DynamicResource CalendarTodayBrush}" />
     </Style>
     <Style Selector="Border.today TextBlock">
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Foreground" Value="{DynamicResource CalendarTodayForegroundBrush}" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
@@ -79,26 +79,31 @@
                                                             Padding="4">
                                                         <StackPanel HorizontalAlignment="Center" 
                                                                     VerticalAlignment="Center" 
-                                                                    Spacing="4">
+                                                                    Spacing="4"
+                                                                    TextOptions.TextRenderingMode="SubpixelAntialias"
+                                                                    RenderOptions.EdgeMode="Antialias">
                                                             
                                                             <TextBlock Text="{Binding DayOfWeekName}" 
                                                                     HorizontalAlignment="Center" 
+                                                                    FontFamily="Open Sans, sans-serif"
                                                                     FontWeight="SemiBold" 
-                                                                    FontSize="11" 
-                                                                    Foreground="{DynamicResource CalendarTextSecondaryBrush}" />
+                                                                    FontSize="13" 
+                                                                    Foreground="{DynamicResource CalendarTextPrimaryBrush}" />
                                                             
                                                             <Border Width="28"
                                                                     Height="28"
                                                                     CornerRadius="14"
                                                                     HorizontalAlignment="Center"
                                                                     VerticalAlignment="Center"
+                                                                    UseLayoutRounding="False"
                                                                     Classes.today="{Binding IsToday}">
                                                                 <TextBlock Text="{Binding Date.Day}" 
                                                                         HorizontalAlignment="Center" 
                                                                         VerticalAlignment="Center" 
-                                                                        FontSize="13" 
+                                                                        FontFamily="Open Sans, sans-serif"                                                                        
                                                                         FontWeight="SemiBold"
-                                                                        Foreground="{DynamicResource CalendarTextSecondaryBrush}" />
+                                                                        FontSize="13" 
+                                                                        Foreground="{DynamicResource CalendarTextPrimaryBrush}" />
                                                             </Border>
                                                         </StackPanel>
                                                     </Border>
@@ -116,6 +121,7 @@
                                                             ViewEnd="{TemplateBinding ViewEnd}"
                                                             ItemsSource="{TemplateBinding ItemsSource}"
                                                             GridBackgroundBrush="{DynamicResource CalendarBackgroundBrush}"
+                                                            RulerBackgroundBrush="{DynamicResource CalendarHeaderBackgroundBrush}"
                                                             LineBrush="{DynamicResource CalendarGridLineBrush}"
                                                             TextBrush="{DynamicResource CalendarTextSecondaryBrush}" />
                                 </ScrollViewer>
@@ -130,7 +136,7 @@
                                                         ViewEnd="{TemplateBinding ViewEnd}"
                                                         ItemsSource="{TemplateBinding ItemsSource}"
                                                         GridBackgroundBrush="{DynamicResource CalendarBackgroundBrush}"
-                                                        RulerBackgroundBrush="{DynamicResource CalendarRulerBackgroundBrush}"
+                                                        RulerBackgroundBrush="{DynamicResource CalendarHeaderBackgroundBrush}"
                                                         LineBrush="{DynamicResource CalendarGridLineBrush}"
                                                         TextBrush="{DynamicResource CalendarTextPrimaryBrush}"
                                                         TodayBrush="{DynamicResource CalendarTodayBrush}" />

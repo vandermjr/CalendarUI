@@ -24,20 +24,23 @@ namespace CalendarUI.Avalonia.Controls.Calendar
         public static readonly StyledProperty<IEnumerable?> ItemsSourceProperty =
             AvaloniaProperty.Register<CalendarMonthPanel, IEnumerable?>(nameof(ItemsSource));
 
-        public static readonly StyledProperty<IBrush> GridBackgroundBrushProperty =
-            AvaloniaProperty.Register<CalendarMonthPanel, IBrush>(nameof(GridBackgroundBrush), Brushes.White);
+        public static readonly StyledProperty<IBrush?> GridBackgroundBrushProperty =
+            AvaloniaProperty.Register<CalendarMonthPanel, IBrush?>(nameof(GridBackgroundBrush));
 
-        public static readonly StyledProperty<IBrush> RulerBackgroundBrushProperty =
-            AvaloniaProperty.Register<CalendarMonthPanel, IBrush>(nameof(RulerBackgroundBrush), new SolidColorBrush(Color.Parse("#F0F4FC")));
+        public static readonly StyledProperty<IBrush?> RulerBackgroundBrushProperty =
+            AvaloniaProperty.Register<CalendarMonthPanel, IBrush?>(nameof(RulerBackgroundBrush));
 
-        public static readonly StyledProperty<IBrush> LineBrushProperty =
-            AvaloniaProperty.Register<CalendarMonthPanel, IBrush>(nameof(LineBrush), new SolidColorBrush(Color.Parse("#E0E0E0")));
+        public static readonly StyledProperty<IBrush?> LineBrushProperty =
+            AvaloniaProperty.Register<CalendarMonthPanel, IBrush?>(nameof(LineBrush));
 
-        public static readonly StyledProperty<IBrush> TextBrushProperty =
-            AvaloniaProperty.Register<CalendarMonthPanel, IBrush>(nameof(TextBrush), new SolidColorBrush(Color.Parse("#70757A")));
+        public static readonly StyledProperty<IBrush?> TextBrushProperty =
+            AvaloniaProperty.Register<CalendarMonthPanel, IBrush?>(nameof(TextBrush));
 
         public static readonly StyledProperty<IBrush?> TodayBrushProperty =
             AvaloniaProperty.Register<CalendarMonthPanel, IBrush?>(nameof(TodayBrush));
+
+        public static readonly StyledProperty<IBrush?> TodayForegroundBrushProperty =
+            AvaloniaProperty.Register<CalendarMonthPanel, IBrush?>(nameof(TodayForegroundBrush));
 
         public static readonly StyledProperty<double> TimeRulerWidthProperty =
             AvaloniaProperty.Register<CalendarMonthPanel, double>(nameof(TimeRulerWidth), 60.0);
@@ -46,7 +49,16 @@ namespace CalendarUI.Avalonia.Controls.Calendar
         {
             AffectsMeasure<CalendarMonthPanel>(ViewStartProperty, ViewEndProperty, TimeRulerWidthProperty);
             AffectsArrange<CalendarMonthPanel>(ViewStartProperty, ViewEndProperty, TimeRulerWidthProperty);
-            AffectsRender<CalendarMonthPanel>(ViewStartProperty, ViewEndProperty, GridBackgroundBrushProperty, RulerBackgroundBrushProperty, LineBrushProperty, TextBrushProperty, TodayBrushProperty, TimeRulerWidthProperty);
+            AffectsRender<CalendarMonthPanel>(
+                ViewStartProperty,
+                ViewEndProperty,
+                GridBackgroundBrushProperty,
+                RulerBackgroundBrushProperty,
+                LineBrushProperty,
+                TextBrushProperty,
+                TodayBrushProperty,
+                TodayForegroundBrushProperty,
+                TimeRulerWidthProperty);
         }
 
         public DateTime ViewStart
@@ -67,25 +79,25 @@ namespace CalendarUI.Avalonia.Controls.Calendar
             set => SetValue(ItemsSourceProperty, value);
         }
 
-        public IBrush GridBackgroundBrush
+        public IBrush? GridBackgroundBrush
         {
             get => GetValue(GridBackgroundBrushProperty);
             set => SetValue(GridBackgroundBrushProperty, value);
         }
 
-        public IBrush RulerBackgroundBrush
+        public IBrush? RulerBackgroundBrush
         {
             get => GetValue(RulerBackgroundBrushProperty);
             set => SetValue(RulerBackgroundBrushProperty, value);
         }
 
-        public IBrush LineBrush
+        public IBrush? LineBrush
         {
             get => GetValue(LineBrushProperty);
             set => SetValue(LineBrushProperty, value);
         }
 
-        public IBrush TextBrush
+        public IBrush? TextBrush
         {
             get => GetValue(TextBrushProperty);
             set => SetValue(TextBrushProperty, value);
@@ -95,6 +107,12 @@ namespace CalendarUI.Avalonia.Controls.Calendar
         {
             get => GetValue(TodayBrushProperty);
             set => SetValue(TodayBrushProperty, value);
+        }
+
+        public IBrush? TodayForegroundBrush
+        {
+            get => GetValue(TodayForegroundBrushProperty);
+            set => SetValue(TodayForegroundBrushProperty, value);
         }
 
         public double TimeRulerWidth
@@ -115,14 +133,25 @@ namespace CalendarUI.Avalonia.Controls.Calendar
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == ViewStartProperty || change.Property == ViewEndProperty || change.Property == TimeRulerWidthProperty)
+            if (change.Property == ViewStartProperty ||
+                change.Property == ViewEndProperty ||
+                change.Property == TimeRulerWidthProperty)
             {
-                _backgroundControl.InvalidateMeasure();
-                _backgroundControl.InvalidateVisual();
+                _backgroundControl?.InvalidateMeasure();
+                _backgroundControl?.InvalidateVisual();
 
                 InvalidateMeasure();
                 InvalidateArrange();
                 InvalidateVisual();
+            }
+            else if (change.Property == GridBackgroundBrushProperty ||
+                     change.Property == RulerBackgroundBrushProperty ||
+                     change.Property == LineBrushProperty ||
+                     change.Property == TextBrushProperty ||
+                     change.Property == TodayBrushProperty ||
+                     change.Property == TodayForegroundBrushProperty)
+            {
+                _backgroundControl?.InvalidateVisual();
             }
             else if (change.Property == ItemsSourceProperty)
             {
@@ -272,11 +301,10 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                                 daySlots[validStart + d] = slot + 1;
                         }
 
-                        // Aplica o offset do TimeRulerWidth (60px)
                         double x = rulerWidth + (dayCol * cellWidth) + 2.0;
                         double weekTopY = weekRow * cellHeight;
 
-                        double headerHeight = (weekRow == 0) ? 50.0 : 36.0;
+                        double headerHeight = (weekRow == 0) ? 58.0 : 36.0;
                         double itemHeight = 20.0;
 
                         double y = weekTopY + headerHeight + (slot * (itemHeight + 2.0));
@@ -306,8 +334,8 @@ namespace CalendarUI.Avalonia.Controls.Calendar
             private readonly CalendarMonthPanel _owner;
 
             private static readonly Typeface DayOfWeekTypeface = new Typeface("Open Sans, sans-serif", FontStyle.Normal, FontWeight.SemiBold);
-            private static readonly Typeface DayNumberTypeface = new Typeface("Open Sans, sans-serif", FontStyle.Normal, FontWeight.Bold);
-            private static readonly Typeface RulerWeekTypeface = new Typeface("Open Sans, sans-serif", FontStyle.Normal, FontWeight.Normal);
+            private static readonly Typeface DayNumberTypeface = new Typeface("Open Sans, sans-serif", FontStyle.Normal, FontWeight.SemiBold);
+            private static readonly Typeface RulerWeekTypeface = new Typeface("Open Sans, sans-serif", FontStyle.Normal, FontWeight.SemiBold);
 
             public MonthGridBackground(CalendarMonthPanel owner) => _owner = owner;
 
@@ -327,12 +355,19 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                 double cellWidth = gridWidth / 7.0;
                 double cellHeight = height / totalWeeks;
 
-                var linePen = new Pen(_owner.LineBrush, 1);
+                var lineBrush = _owner.LineBrush ?? Brushes.Gray;
+                var textBrush = _owner.TextBrush ?? Brushes.Black;
+                var rulerBrush = _owner.RulerBackgroundBrush ?? Brushes.Transparent;
+                var gridBrush = _owner.GridBackgroundBrush ?? Brushes.Transparent;
+                var todayBgBrush = _owner.TodayBrush ?? Brushes.Blue;
+                var todayFgBrush = _owner.TodayForegroundBrush ?? Brushes.White;
+
+                var linePen = new Pen(lineBrush, 1);
                 DateTime gridStartDate = _owner.GetGridStartDate();
 
                 // Fundo da régua e da grade
-                context.FillRectangle(_owner.RulerBackgroundBrush, new Rect(0, 0, rulerWidth, height));
-                context.FillRectangle(_owner.GridBackgroundBrush, new Rect(rulerWidth, 0, gridWidth, height));
+                context.FillRectangle(rulerBrush, new Rect(0, 0, rulerWidth, height));
+                context.FillRectangle(gridBrush, new Rect(rulerWidth, 0, gridWidth, height));
 
                 // 1. Linha vertical separadora da régua de semanas
                 context.DrawLine(linePen, new Point(rulerWidth, 0), new Point(rulerWidth, height));
@@ -371,14 +406,13 @@ namespace CalendarUI.Avalonia.Controls.Calendar
 
                     var formattedWeekText = new FormattedText(
                         rangeText, culture, FlowDirection.LeftToRight,
-                        RulerWeekTypeface, 10.0, _owner.TextBrush);
+                        RulerWeekTypeface, 11.0, textBrush);
 
-                    // Centraliza e rotaciona o texto a 90° (de cima para baixo)
                     double centerX = rulerWidth / 2.0;
                     double centerY = weekY + (cellHeight / 2.0);
 
                     using (context.PushTransform(Matrix.CreateTranslation(-formattedWeekText.Width / 2.0, -formattedWeekText.Height / 2.0) *
-                                                Matrix.CreateRotation(Math.PI / 2.0) * // 90 graus em radianos
+                                                Matrix.CreateRotation(Math.PI / 2.0) *
                                                 Matrix.CreateTranslation(centerX, centerY)))
                     {
                         context.DrawText(formattedWeekText, new Point(0, 0));
@@ -387,8 +421,6 @@ namespace CalendarUI.Avalonia.Controls.Calendar
 
                 // 5. Renderização de cabeçalhos e números dos dias
                 var shortestDayNames = culture.DateTimeFormat.ShortestDayNames;
-                IBrush todayBgBrush = _owner.TodayBrush ?? new SolidColorBrush(Color.Parse("#1A73E8"));
-                IBrush todayFgBrush = Brushes.White;
 
                 for (int week = 0; week < totalWeeks; week++)
                 {
@@ -411,7 +443,7 @@ namespace CalendarUI.Avalonia.Controls.Calendar
 
                             var formattedHeader = new FormattedText(
                                 dayOfWeekName, culture, FlowDirection.LeftToRight,
-                                DayOfWeekTypeface, 11.0, _owner.TextBrush)
+                                DayOfWeekTypeface, 13.0, textBrush)
                             {
                                 MaxTextWidth = Math.Max(1, cellWidth - 4),
                                 Trimming = TextTrimming.CharacterEllipsis
@@ -434,7 +466,7 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                             };
 
                             double centerX = Math.Round(cellX + (cellWidth / 2.0));
-                            double centerY = (week == 0) ? 32.0 : weekY + 18.0;
+                            double centerY = (week == 0) ? 38.0 : weekY + 18.0;
 
                             context.DrawEllipse(todayBgBrush, null, new Point(centerX, centerY), 14.0, 14.0);
 
@@ -446,13 +478,13 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                         {
                             var formattedText = new FormattedText(
                                 dayNumText, culture, FlowDirection.LeftToRight,
-                                DayOfWeekTypeface, 12.0, _owner.TextBrush)
+                                DayOfWeekTypeface, 12.0, textBrush)
                             {
                                 MaxTextWidth = Math.Max(1, cellWidth - 8),
                                 Trimming = TextTrimming.CharacterEllipsis
                             };
 
-                            double numberY = (week == 0) ? 25.0 : weekY + 10.0;
+                            double numberY = (week == 0) ? 30.0 : weekY + 10.0;
                             double textX = Math.Round(cellX + (cellWidth / 2.0) - (formattedText.Width / 2.0));
                             context.DrawText(formattedText, new Point(textX, numberY));
                         }

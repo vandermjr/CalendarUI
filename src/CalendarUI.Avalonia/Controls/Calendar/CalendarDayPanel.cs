@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -9,22 +10,22 @@ namespace CalendarUI.Avalonia.Controls.Calendar
 {
     public class CalendarDayPanel : Panel
     {
-        public static readonly StyledProperty<IBrush> GridBackgroundBrushProperty =
-            AvaloniaProperty.Register<CalendarDayPanel, IBrush>(nameof(GridBackgroundBrush), Brushes.White);
+        public static readonly StyledProperty<IBrush?> GridBackgroundBrushProperty =
+            AvaloniaProperty.Register<CalendarDayPanel, IBrush?>(nameof(GridBackgroundBrush));
 
-        public static readonly StyledProperty<IBrush> RulerBackgroundBrushProperty =
-            AvaloniaProperty.Register<CalendarDayPanel, IBrush>(nameof(RulerBackgroundBrush), new SolidColorBrush(Color.Parse("#F0F4FC")));
+        public static readonly StyledProperty<IBrush?> RulerBackgroundBrushProperty =
+            AvaloniaProperty.Register<CalendarDayPanel, IBrush?>(nameof(RulerBackgroundBrush));
 
-        public static readonly StyledProperty<IBrush> LineBrushProperty =
-            AvaloniaProperty.Register<CalendarDayPanel, IBrush>(nameof(LineBrush), new SolidColorBrush(Color.Parse("#A0B4D5")));
+        public static readonly StyledProperty<IBrush?> LineBrushProperty =
+            AvaloniaProperty.Register<CalendarDayPanel, IBrush?>(nameof(LineBrush));
 
-        public static readonly StyledProperty<IBrush> TextBrushProperty =
-            AvaloniaProperty.Register<CalendarDayPanel, IBrush>(nameof(TextBrush), new SolidColorBrush(Color.Parse("#51688E")));
+        public static readonly StyledProperty<IBrush?> TextBrushProperty =
+            AvaloniaProperty.Register<CalendarDayPanel, IBrush?>(nameof(TextBrush));
 
-        public IBrush GridBackgroundBrush { get => GetValue(GridBackgroundBrushProperty); set => SetValue(GridBackgroundBrushProperty, value); }
-        public IBrush RulerBackgroundBrush { get => GetValue(RulerBackgroundBrushProperty); set => SetValue(RulerBackgroundBrushProperty, value); }
-        public IBrush LineBrush { get => GetValue(LineBrushProperty); set => SetValue(LineBrushProperty, value); }
-        public IBrush TextBrush { get => GetValue(TextBrushProperty); set => SetValue(TextBrushProperty, value); }
+        public IBrush? GridBackgroundBrush { get => GetValue(GridBackgroundBrushProperty); set => SetValue(GridBackgroundBrushProperty, value); }
+        public IBrush? RulerBackgroundBrush { get => GetValue(RulerBackgroundBrushProperty); set => SetValue(RulerBackgroundBrushProperty, value); }
+        public IBrush? LineBrush { get => GetValue(LineBrushProperty); set => SetValue(LineBrushProperty, value); }
+        public IBrush? TextBrush { get => GetValue(TextBrushProperty); set => SetValue(TextBrushProperty, value); }
 
         public static readonly StyledProperty<DateTime> ViewStartProperty =
             AvaloniaProperty.Register<CalendarDayPanel, DateTime>(nameof(ViewStart), DateTime.Today);
@@ -80,6 +81,20 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                 x.InvalidateArrange();
                 x._backgroundControl.InvalidateVisual();
             });
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == GridBackgroundBrushProperty ||
+                change.Property == RulerBackgroundBrushProperty ||
+                change.Property == LineBrushProperty ||
+                change.Property == TextBrushProperty ||
+                change.Property == TimeRulerWidthProperty)
+            {
+                _backgroundControl?.InvalidateVisual();
+            }
         }
 
         private void OnItemsSourceChanged(AvaloniaPropertyChangedEventArgs e)
@@ -231,7 +246,7 @@ namespace CalendarUI.Avalonia.Controls.Calendar
             private readonly CalendarDayPanel _owner;
 
             private static readonly Typeface HourBigTypeface = new Typeface("Open Sans, sans-serif", FontStyle.Normal, FontWeight.Normal);
-            private static readonly Typeface MinuteSmallTypeface = new Typeface("Open Sans, sans-serif", FontStyle.Normal, FontWeight.Bold);
+            private static readonly Typeface MinuteSmallTypeface = new Typeface("Open Sans, sans-serif", FontStyle.Normal, FontWeight.SemiBold);
 
             public CalendarGridBackground(CalendarDayPanel owner) => _owner = owner;
 
@@ -247,12 +262,16 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                 double rulerWidth = _owner.TimeRulerWidth;
                 double gridWidth = Math.Max(0, width - rulerWidth);
 
-                var linePen = new Pen(_owner.LineBrush, 1);
-                var textBrush = _owner.TextBrush;
+                var lineBrush = _owner.LineBrush ?? Brushes.Gray;
+                var textBrush = _owner.TextBrush ?? Brushes.Black;
+                var rulerBrush = _owner.RulerBackgroundBrush ?? Brushes.Transparent;
+                var gridBrush = _owner.GridBackgroundBrush ?? Brushes.Transparent;
+
+                var linePen = new Pen(lineBrush, 1);
 
                 // 1. Preenchimento de Fundo
-                context.FillRectangle(_owner.RulerBackgroundBrush, new Rect(0, 0, rulerWidth, height));
-                context.FillRectangle(_owner.GridBackgroundBrush, new Rect(rulerWidth, 0, gridWidth, height));
+                context.FillRectangle(rulerBrush, new Rect(0, 0, rulerWidth, height));
+                context.FillRectangle(gridBrush, new Rect(rulerWidth, 0, gridWidth, height));
 
                 // 2. Linhas Horizontais das Horas
                 double effectiveHourHeight = height / totalHours;
@@ -289,11 +308,11 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                     }
                 }
 
-                // 4. LINHA VERTICAL DIVISÓRIA DA RÉGUA DE HORAS (Separa as horas dos dias)
+                // 4. Linha vertical divisória da régua de horas
                 double rulerLineX = Math.Floor(rulerWidth) - 0.5;
                 context.DrawLine(linePen, new Point(rulerLineX, 0), new Point(rulerLineX, height));
 
-                // 5. LINHAS VERTICAIS DIVISÓRIAS DOS DIAS (Grade das colunas)
+                // 5. Linhas verticais divisórias dos dias
                 int totalDays = _owner.GetTotalDays();
                 if (totalDays > 1)
                 {
