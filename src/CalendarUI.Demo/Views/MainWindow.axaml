@@ -1,12 +1,17 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:CalendarUI.Demo.ViewModels"
+        xmlns:converters="using:CalendarUI.Avalonia.Converters"
         xmlns:cal="using:CalendarUI.Avalonia.Controls.Calendar"
         x:Class="CalendarUI.Demo.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Title="Winforms Calendar - Avalonia UI Demo"
         Width="1000" Height="700"
         Background="{DynamicResource CalendarBackgroundBrush}">
+    
+    <Window.Resources>
+        <converters:ThemeVariantToBoolConverter x:Key="ThemeVariantToBoolConverter" />
+    </Window.Resources>
 
     <DockPanel Margin="16">
         <!-- Header -->

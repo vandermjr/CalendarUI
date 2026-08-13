@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Layout;
 
 namespace CalendarUI.Avalonia.Controls.Calendar
 {
