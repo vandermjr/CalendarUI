@@ -32,7 +32,7 @@ public class DateRangeEventArgs : EventArgs
 
 public class MonthView : TemplatedControl
 {
-    public const int MaximumFullDays = 8;
+    public const int MaximumFullDays = 7;
 
     public event EventHandler<DateRangeEventArgs>? DateRangeSelected;
 

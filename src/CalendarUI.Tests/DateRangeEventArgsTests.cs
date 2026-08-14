@@ -31,7 +31,7 @@ public class DateRangeEventArgsTests
     {
         var args = new DateRangeEventArgs(
             new DateTime(2026, 1, 10),
-            new DateTime(2026, 1, 17));
+            new DateTime(2026, 1, 16));
 
         Assert.Equal(MonthView.MaximumFullDays, args.TotalDays);
         Assert.True(args.ShouldUseExpandedView);
