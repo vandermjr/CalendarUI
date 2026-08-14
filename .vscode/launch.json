@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/WinformsCalendar.Demo/bin/Debug/net8.0/WinformsCalendar.Demo.dll",
+            "program": "${workspaceFolder}/src/CalendarUI.Demo/bin/Debug/net8.0/CalendarUI.Demo.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/WinformsCalendar.Demo",
+            "cwd": "${workspaceFolder}/src/CalendarUI.Demo",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

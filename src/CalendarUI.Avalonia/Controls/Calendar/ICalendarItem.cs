@@ -1,4 +1,5 @@
-﻿using Avalonia.Media;
+﻿using System;
+using Avalonia.Media;
 
 namespace CalendarUI.Avalonia.Controls.Calendar;
 
