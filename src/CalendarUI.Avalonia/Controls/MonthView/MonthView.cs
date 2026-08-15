@@ -223,17 +223,11 @@ public class MonthView : TemplatedControl
     {
         Days.Clear();
 
-        var firstDayOfMonth = new DateTime(DisplayDate.Year, DisplayDate.Month, 1);
-
-        int dayOfWeekOffset = (int)firstDayOfMonth.DayOfWeek;
-        var startDate = firstDayOfMonth.AddDays(-dayOfWeekOffset);
-
         DateTime activeStart = SelectionStart < SelectionEnd ? SelectionStart : SelectionEnd;
         DateTime activeEnd = SelectionStart < SelectionEnd ? SelectionEnd : SelectionStart;
 
-        for (int i = 0; i < 42; i++)
+        foreach (var currentDate in MonthViewGridCalculator.GetDates(DisplayDate))
         {
-            var currentDate = startDate.AddDays(i);
             bool isCurrentMonth = currentDate.Month == DisplayDate.Month;
             bool isSelected = currentDate.Date >= activeStart.Date && currentDate.Date <= activeEnd.Date;
             bool isToday = currentDate.Date == DateTime.Today;
