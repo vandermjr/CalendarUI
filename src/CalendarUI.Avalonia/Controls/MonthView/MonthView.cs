@@ -8,28 +8,6 @@ using Avalonia.VisualTree;
 
 namespace CalendarUI.Avalonia.Controls.MonthView;
 
-public class DateRangeEventArgs : EventArgs
-{
-    public DateTime Start { get; }
-    public DateTime End { get; }
-    public int TotalDays => (End.Date - Start.Date).Days + 1;
-    public bool ShouldUseExpandedView => TotalDays <= MonthView.MaximumFullDays;
-
-    public DateRangeEventArgs(DateTime start, DateTime end)
-    {
-        if (start <= end)
-        {
-            Start = start.Date;
-            End = end.Date;
-        }
-        else
-        {
-            Start = end.Date;
-            End = start.Date;
-        }
-    }
-}
-
 public class MonthView : TemplatedControl
 {
     public const int MaximumFullDays = 7;
@@ -131,6 +109,7 @@ public class MonthView : TemplatedControl
 
         DateRangeSelected?.Invoke(this, new DateRangeEventArgs(start, end));
     }
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
@@ -271,23 +250,4 @@ public class MonthView : TemplatedControl
             Days.Add(dayVm);
         }
     }
-}
-
-public class MonthViewDayViewModel
-{
-    private readonly MonthView _owner;
-
-    public DateTime Date { get; set; }
-    public int DayNumber { get; set; }
-    public bool IsCurrentMonth { get; set; }
-    public bool IsSelected { get; set; }
-    public bool IsToday { get; set; }
-
-    public MonthViewDayViewModel(MonthView owner)
-    {
-        _owner = owner;
-    }
-
-    public void OnPointerPressed(PointerPressedEventArgs e) => _owner.OnDayPointerPressed(this, e);
-    public void OnPointerEntered(PointerEventArgs e) => _owner.OnDayPointerEntered(this, e);
 }
