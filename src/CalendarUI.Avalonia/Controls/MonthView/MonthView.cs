@@ -36,7 +36,6 @@ public class MonthView : TemplatedControl
 
     public event EventHandler<DateRangeEventArgs>? DateRangeSelected;
 
-    // 1. Registra a DirectProperty para DisplayDateFormatted (somente leitura)
     public static readonly DirectProperty<MonthView, string> DisplayDateFormattedProperty =
         AvaloniaProperty.RegisterDirect<MonthView, string>(
             nameof(DisplayDateFormatted),
@@ -57,7 +56,6 @@ public class MonthView : TemplatedControl
         set => SetValue(DisplayDateProperty, value);
     }
 
-    // 2. Propriedade pública
     public string DisplayDateFormatted
     {
         get
@@ -83,7 +81,6 @@ public class MonthView : TemplatedControl
 
     public ObservableCollection<MonthViewDayViewModel> Days { get; } = new();
 
-    // Coleção dinâmica para as iniciais dos dias da semana
     public ObservableCollection<string> DayNames { get; } = new();
 
     private Button? _prevButton;
@@ -112,27 +109,11 @@ public class MonthView : TemplatedControl
     {
         DayNames.Clear();
 
-        // Referência base começando em um Domingo (ex: 2026-08-02 foi Domingo)
-        DateTime sundayBase = new DateTime(2026, 8, 2);
+        string[] abbreviatedDayNames = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames;
 
         for (int i = 0; i < 7; i++)
         {
-            DateTime dayDate = sundayBase.AddDays(i);
-
-            // // Obtém o nome via DayOfWeekConverter
-            // string fullDayName = DayOfWeekConverter.Instance
-            //     .Convert(dayDate, typeof(string), null, CultureInfo.CurrentCulture)?
-            //     .ToString() ?? dayDate.ToString("ddd", CultureInfo.CurrentCulture);
-
-            // // Pega apenas a primeira letra em maiúsculo
-            // string initial = !string.IsNullOrEmpty(fullDayName)
-            //     ? fullDayName.Trim().Substring(0, 1).ToUpper(CultureInfo.CurrentCulture)
-            //     : "?";
-
-            // Obtém a sigla/nome do dia
-            string dayName = dayDate.ToString("ddd", CultureInfo.CurrentCulture);
-
-            // Pega apenas a primeira letra em maiúsculo
+            string dayName = abbreviatedDayNames[i];
             string initial = !string.IsNullOrEmpty(dayName)
                 ? char.ToUpper(dayName.Trim()[0], CultureInfo.CurrentCulture).ToString()
                 : "?";
@@ -265,7 +246,6 @@ public class MonthView : TemplatedControl
 
         var firstDayOfMonth = new DateTime(DisplayDate.Year, DisplayDate.Month, 1);
 
-        // Offset padrão alinhado com Domingo (Sunday = 0, Monday = 1, ...)
         int dayOfWeekOffset = (int)firstDayOfMonth.DayOfWeek;
         var startDate = firstDayOfMonth.AddDays(-dayOfWeekOffset);
 
