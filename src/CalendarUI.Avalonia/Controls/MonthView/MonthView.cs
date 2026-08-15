@@ -188,8 +188,6 @@ public class MonthView : TemplatedControl
 
         if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            _isDragging = true;
-
             if (e.Source is Control control && control.DataContext is MonthViewDayViewModel dayVm)
             {
                 OnDayPointerPressed(dayVm, e);
