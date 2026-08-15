@@ -39,8 +39,6 @@ public class MonthView : TemplatedControl
         get
         {
             string formatted = DisplayDate.ToString("MMMM yyyy", CultureInfo.CurrentCulture);
-            if (string.IsNullOrEmpty(formatted)) return formatted;
-
             return char.ToUpper(formatted[0], CultureInfo.CurrentCulture) + formatted.Substring(1);
         }
     }
