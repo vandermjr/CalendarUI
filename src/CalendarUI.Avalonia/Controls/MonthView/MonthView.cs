@@ -232,7 +232,7 @@ public class MonthView : TemplatedControl
             bool isSelected = currentDate.Date >= activeStart.Date && currentDate.Date <= activeEnd.Date;
             bool isToday = currentDate.Date == DateTime.Today;
 
-            var dayVm = new MonthViewDayViewModel(this)
+            var dayVm = new MonthViewDayViewModel()
             {
                 Date = currentDate,
                 DayNumber = currentDate.Day,
