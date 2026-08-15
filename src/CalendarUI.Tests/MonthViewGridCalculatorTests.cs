@@ -1,4 +1,5 @@
 using CalendarUI.Avalonia.Controls.MonthView;
+using Xunit;
 
 namespace CalendarUI.Tests;
 
