@@ -146,6 +146,7 @@ public class MonthView : TemplatedControl
         {
             _isDragging = true;
             _dragAnchorDate = dayVm.Date;
+            e.Pointer.Capture(this);
 
             SelectionStart = dayVm.Date;
             SelectionEnd = dayVm.Date;
