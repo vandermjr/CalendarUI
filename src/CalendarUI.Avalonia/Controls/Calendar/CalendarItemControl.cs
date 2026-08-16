@@ -26,8 +26,14 @@ public class CalendarItemControl : TemplatedControl
 
     internal void SetVisibilityState(CalendarItemVisibilityState state)
     {
-        PseudoClasses.Set(":continues-before", state is CalendarItemVisibilityState.StartsBeforeView or CalendarItemVisibilityState.ExtendsBeyondView);
-        PseudoClasses.Set(":continues-after", state is CalendarItemVisibilityState.EndsAfterView or CalendarItemVisibilityState.ExtendsBeyondView);
+        bool continuesBefore =
+            state is CalendarItemVisibilityState.StartsBeforeView or CalendarItemVisibilityState.ExtendsBeyondView;
+
+        bool continuesAfter =
+            state is CalendarItemVisibilityState.EndsAfterView or CalendarItemVisibilityState.ExtendsBeyondView;
+
+        PseudoClasses.Set(":continues-before", continuesBefore);
+        PseudoClasses.Set(":continues-after", continuesAfter);
     }
 
     static CalendarItemControl()
