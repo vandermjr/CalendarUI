@@ -71,4 +71,19 @@ public class CalendarMonthPanelTests
         Assert.Equal(1, panel.GetTotalWeeks());
         Assert.Equal(7, panel.GetTotalDays());
     }
+
+    [Fact]
+    public void GridHasOneWeek_WhenRangeContainsSingleDay()
+    {
+        var panel = new CalendarMonthPanel
+        {
+            ViewStart = new DateTime(2026, 1, 7),
+            ViewEnd = new DateTime(2026, 1, 7)
+        };
+
+        Assert.Equal(new DateTime(2026, 1, 4), panel.GetGridStartDate());
+        Assert.Equal(new DateTime(2026, 1, 10), panel.GetGridEndDate());
+        Assert.Equal(1, panel.GetTotalWeeks());
+        Assert.Equal(7, panel.GetTotalDays());
+    }
 }
