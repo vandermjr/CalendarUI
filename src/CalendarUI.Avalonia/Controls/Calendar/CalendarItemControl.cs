@@ -24,6 +24,12 @@ public class CalendarItemControl : TemplatedControl
         set => SetValue(IsSelectedProperty, value);
     }
 
+    internal void SetVisibilityState(CalendarItemVisibilityState state)
+    {
+        PseudoClasses.Set(":continues-before", state is CalendarItemVisibilityState.StartsBeforeView or CalendarItemVisibilityState.ExtendsBeyondView);
+        PseudoClasses.Set(":continues-after", state is CalendarItemVisibilityState.EndsAfterView or CalendarItemVisibilityState.ExtendsBeyondView);
+    }
+
     static CalendarItemControl()
     {
         IsSelectedProperty.Changed.AddClassHandler<CalendarItemControl>((x, e) =>

@@ -21,7 +21,7 @@
     <SolidColorBrush x:Key="CalendarTodayForegroundBrush" Color="#FFFFFF" />
 
     <!-- Cores dos Itens e Cards -->
-    <SolidColorBrush x:Key="CalendarItemAccentStripBrush" Color="#1A73E8" />
+    <SolidColorBrush x:Key="CalendarItemVisibilityWarningBrush" Color="#E5A100" />
     <BoxShadows x:Key="CalendarItemShadow">0 1 2 0 #15000000</BoxShadows>
     <BoxShadows x:Key="CalendarTooltipShadow">0 4 12 0 #33000000</BoxShadows>
 

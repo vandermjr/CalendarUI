@@ -86,4 +86,31 @@ public class CalendarMonthPanelTests
         Assert.Equal(1, panel.GetTotalWeeks());
         Assert.Equal(7, panel.GetTotalDays());
     }
+
+    [Theory]
+    [InlineData(nameof(CalendarItemVisibilityState.StartsBeforeView), -1, 0)]
+    [InlineData(nameof(CalendarItemVisibilityState.EndsAfterView), 0, 1)]
+    [InlineData(nameof(CalendarItemVisibilityState.ExtendsBeyondView), -1, 1)]
+    [InlineData(nameof(CalendarItemVisibilityState.FullyVisible), 0, 0)]
+    public void ItemVisibilityState_ReflectsDaysOutsideGrid(
+        string expectedState,
+        int startOffset,
+        int endOffset)
+    {
+        var panel = new CalendarMonthPanel
+        {
+            ViewStart = new DateTime(2026, 1, 5),
+            ViewEnd = new DateTime(2026, 1, 9)
+        };
+        var gridStart = panel.GetGridStartDate();
+        var gridEnd = panel.GetGridEndDate();
+        var item = new CalendarItem(
+            "Event",
+            gridStart.AddDays(startOffset),
+            gridEnd.AddDays(endOffset));
+
+        var state = CalendarItemVisibility.GetState(item, gridStart, gridEnd);
+
+        Assert.Equal(expectedState, state.ToString());
+    }
 }

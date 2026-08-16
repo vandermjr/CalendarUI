@@ -257,6 +257,7 @@ namespace CalendarUI.Avalonia.Controls.Calendar
             }
 
             DateTime gridStart = GetGridStartDate();
+            DateTime gridEnd = GetGridEndDate();
             int totalDays = totalWeeks * 7;
 
             var daySlots = new int[totalDays];
@@ -267,8 +268,11 @@ namespace CalendarUI.Avalonia.Controls.Calendar
 
                 child.ZIndex = 10;
 
-                if (child.DataContext is ICalendarItem item)
+                if (child is CalendarItemControl itemControl && child.DataContext is ICalendarItem item)
                 {
+                    itemControl.SetVisibilityState(
+                        CalendarItemVisibility.GetState(item, gridStart, gridEnd));
+
                     DateTime itemStart = item.DateStart.Date;
                     DateTime itemEnd = item.DateEnd.Date;
 
