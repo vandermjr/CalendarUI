@@ -29,6 +29,22 @@ public class MonthViewTests
     }
 
     [Fact]
+    public void DisplayDate_ChangingMonth_RebuildsDaysGrid()
+    {
+        var monthView = new MonthView();
+
+        monthView.DisplayDate = new DateTime(2026, 8, 15);
+        monthView.SelectionStart = monthView.SelectionStart.AddDays(1);
+
+        Assert.Equal(new DateTime(2026, 7, 26), monthView.Days[0].Date);
+
+        monthView.DisplayDate = new DateTime(2026, 9, 15);
+
+        Assert.Equal(new DateTime(2026, 8, 30), monthView.Days[0].Date);
+        Assert.Equal(new DateTime(2026, 10, 10), monthView.Days[^1].Date);
+    }
+
+    [Fact]
     public void DisplayDate_IdentifiesCurrentMonthAndAdjacentDays()
     {
         var monthView = new MonthView();
@@ -79,5 +95,26 @@ public class MonthViewTests
                 new DateTime(2026, 8, 20)
             },
             selectedDates);
+    }
+
+    [Fact]
+    public void Selection_CanSpanAdjacentMonths_WithoutChangingDisplayDate()
+    {
+        var monthView = new MonthView
+        {
+            DisplayDate = new DateTime(2026, 8, 15)
+        };
+
+        monthView.SelectionStart = new DateTime(2026, 8, 21);
+        monthView.SelectionEnd = new DateTime(2026, 9, 5);
+
+        Assert.Equal(new DateTime(2026, 8, 15), monthView.DisplayDate);
+        Assert.Equal(new DateTime(2026, 8, 21), monthView.SelectionStart);
+        Assert.Equal(new DateTime(2026, 9, 5), monthView.SelectionEnd);
+
+        Assert.All(
+            monthView.Days.Where(x => x.Date >= new DateTime(2026, 8, 21) &&
+                                      x.Date <= new DateTime(2026, 9, 5)),
+            day => Assert.True(day.IsSelected));
     }
 }
