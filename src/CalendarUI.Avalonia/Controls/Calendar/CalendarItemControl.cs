@@ -24,16 +24,36 @@ public class CalendarItemControl : TemplatedControl
         set => SetValue(IsSelectedProperty, value);
     }
 
-    internal void SetVisibilityState(CalendarItemVisibilityState state)
+    internal void SetVisibilityState(
+    CalendarItemVisibilityState state,
+    bool isFirstSegment,
+    bool isLastSegment)
     {
         bool continuesBefore =
-            state is CalendarItemVisibilityState.StartsBeforeView or CalendarItemVisibilityState.ExtendsBeyondView;
+            isFirstSegment &&
+            state is CalendarItemVisibilityState.StartsBeforeView
+                or CalendarItemVisibilityState.ExtendsBeyondView;
 
         bool continuesAfter =
-            state is CalendarItemVisibilityState.EndsAfterView or CalendarItemVisibilityState.ExtendsBeyondView;
+            isLastSegment &&
+            state is CalendarItemVisibilityState.EndsAfterView
+                or CalendarItemVisibilityState.ExtendsBeyondView;
 
         PseudoClasses.Set(":continues-before", continuesBefore);
         PseudoClasses.Set(":continues-after", continuesAfter);
+    }
+
+    internal void SetSegmentContinuation(
+        bool continuesFromPrevious,
+        bool continuesToNext)
+    {
+        PseudoClasses.Set(
+            ":segment-continues-from-previous",
+            continuesFromPrevious);
+
+        PseudoClasses.Set(
+            ":segment-continues-to-next",
+            continuesToNext);
     }
 
     static CalendarItemControl()

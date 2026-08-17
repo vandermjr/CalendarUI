@@ -10,115 +10,166 @@
     <Style Selector="local|CalendarItemControl">
         <Setter Property="Template">
             <ControlTemplate TargetType="local:CalendarItemControl" x:DataType="local:ICalendarItem">
-                <Border Margin="2,1"
-                        CornerRadius="3"
-                        ClipToBounds="True"
-                        Background="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
-                        BorderBrush="{DynamicResource CalendarBorderBrush}"
-                        BorderThickness="1"
-                        BoxShadow="{DynamicResource CalendarItemShadow}"
-                        ToolTip.ShowDelay="200">
+                <Grid ClipToBounds="False">
+                    <Border x:Name="PART_ItemBorder"
+                            Margin="2,1"
+                            CornerRadius="3"
+                            ClipToBounds="True"
+                            Background="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}"
+                            BorderBrush="{DynamicResource CalendarBorderBrush}"
+                            BorderThickness="1"
+                            BoxShadow="{DynamicResource CalendarItemShadow}"
+                            ToolTip.ShowDelay="200">
 
-                    <!-- ToolTip -->
-                    <ToolTip.Tip>
-                        <Border CornerRadius="8"
-                                Background="{DynamicResource CalendarSurfaceBrush}"
-                                BorderBrush="{DynamicResource CalendarBorderBrush}"
-                                BorderThickness="1"
-                                Padding="12,10"
-                                BoxShadow="{DynamicResource CalendarTooltipShadow}"
-                                MaxWidth="300">
-                            <StackPanel Spacing="6">
-                                <TextBlock Text="{Binding Text}"
-                                           FontWeight="Bold"
-                                           FontSize="13"
-                                           Foreground="{DynamicResource CalendarTextPrimaryBrush}"
-                                           TextWrapping="Wrap" />
+                        <!-- ToolTip -->
+                        <ToolTip.Tip>
+                            <Border CornerRadius="8"
+                                    Background="{DynamicResource CalendarSurfaceBrush}"
+                                    BorderBrush="{DynamicResource CalendarBorderBrush}"
+                                    BorderThickness="1"
+                                    Padding="12,10"
+                                    BoxShadow="{DynamicResource CalendarTooltipShadow}"
+                                    MaxWidth="300">
+                                <StackPanel Spacing="6">
+                                    <TextBlock Text="{Binding Text}"
+                                            FontWeight="Bold"
+                                            FontSize="13"
+                                            Foreground="{DynamicResource CalendarTextPrimaryBrush}"
+                                            TextWrapping="Wrap" />
 
-                                <Separator Background="{DynamicResource CalendarGridLineBrush}" Height="1" Margin="0,2" />
+                                    <Separator Background="{DynamicResource CalendarGridLineBrush}" Height="1" Margin="0,2" />
 
-                                <Grid ColumnDefinitions="Auto, *">
-                                    <TextBlock Text="Data:" 
-                                               FontWeight="SemiBold" 
-                                               FontSize="11" 
-                                               Foreground="{DynamicResource CalendarTextSecondaryBrush}" 
-                                               Margin="0,0,8,0" />
-                                    <TextBlock Grid.Column="1" 
-                                               Text="{Binding DateStart, StringFormat='{}{0:dd/MM/yyyy (dddd)}'}"
-                                               FontSize="11" 
-                                               Foreground="{DynamicResource CalendarTextPrimaryBrush}" />
-                                </Grid>
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock Text="Período:"
+                                                FontWeight="SemiBold"
+                                                FontSize="11"
+                                                Foreground="{DynamicResource CalendarTextSecondaryBrush}"
+                                                Margin="0,0,8,0" />
 
-                                <Grid ColumnDefinitions="Auto, *">
-                                    <TextBlock Text="Horário:" 
-                                               FontWeight="SemiBold" 
-                                               FontSize="11" 
-                                               Foreground="{DynamicResource CalendarTextSecondaryBrush}" 
-                                               Margin="0,0,8,0" />
-                                    <TextBlock Grid.Column="1" FontSize="11" Foreground="{DynamicResource CalendarTextPrimaryBrush}">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0:HH:mm} às {1:HH:mm}">
-                                                <Binding Path="DateStart" />
-                                                <Binding Path="DateEnd" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </Grid>
-                            </StackPanel>
-                        </Border>
-                    </ToolTip.Tip>
+                                        <TextBlock Grid.Column="1"
+                                                FontSize="11"
+                                                Foreground="{DynamicResource CalendarTextPrimaryBrush}"
+                                                TextWrapping="Wrap">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:dd/MM/yyyy (dddd)} → {1:dd/MM/yyyy (dddd)}">
+                                                    <Binding Path="DateStart" />
+                                                    <Binding Path="DateEnd" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
 
-                    <!-- Conteúdo do Card -->
-                    <Grid ColumnDefinitions="14, *">
-                        <!-- Indicador de continuidade: só aparece quando parte do evento está fora da grade visível. -->
-                        <Grid Grid.Column="0" RowDefinitions="Auto, *, Auto">
-                            <Path x:Name="PART_ContinuesBefore"
-                                Grid.Row="0"
-                                Data="M 2,8 L 7,2 L 12,8"
-                                Width="12"
-                                Height="12"
-                                Stroke="White"
-                                StrokeThickness="1"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                IsVisible="False"
-                                Fill="{DynamicResource CalendarItemVisibilityWarningBrush}" />
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <TextBlock Text="Horário:" 
+                                                FontWeight="SemiBold" 
+                                                FontSize="11" 
+                                                Foreground="{DynamicResource CalendarTextSecondaryBrush}" 
+                                                Margin="0,0,8,0" />
+                                        <TextBlock Grid.Column="1" FontSize="11" Foreground="{DynamicResource CalendarTextPrimaryBrush}">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:HH:mm} às {1:HH:mm}">
+                                                    <Binding Path="DateStart" />
+                                                    <Binding Path="DateEnd" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </ToolTip.Tip>
 
-                            <Path x:Name="PART_ContinuesAfter"
-                                Grid.Row="2"
-                                Data="M 2,2 L 7,8 L 12,2"
-                                Width="12"
-                                Height="12"
-                                Stroke="White"
-                                StrokeThickness="1"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                IsVisible="False"
-                                Fill="{DynamicResource CalendarItemVisibilityWarningBrush}" />
+                        <!-- Conteúdo do Card -->
+                        <Grid>
+                            <!-- Título do Compromisso -->
+                            <TextBlock Grid.Column="1" 
+                                    Text="{Binding Text}"
+                                    FontWeight="SemiBold"
+                                    FontSize="11"
+                                    Foreground="{Binding ForeColor, Converter={StaticResource ColorToBrushConverter}}"
+                                    VerticalAlignment="Center"
+                                    TextWrapping="NoWrap"
+                                    TextTrimming="CharacterEllipsis" 
+                                    Margin="12,1,4,1"/>
                         </Grid>
+                    </Border>
 
-                        <!-- Título do Compromisso -->
-                        <TextBlock Grid.Column="1" 
-                                   Text="{Binding Text}"
-                                   FontWeight="SemiBold"
-                                   FontSize="11"
-                                   Foreground="{Binding ForeColor, Converter={StaticResource ColorToBrushConverter}}"
-                                   VerticalAlignment="Center"
-                                   TextWrapping="NoWrap"
-                                   TextTrimming="CharacterEllipsis" 
-                                   Margin="4,1,4,1"/>
-                    </Grid>
-                </Border>
+                    <!-- Continuidade pela esquerda: cavidade -->
+                    <Path x:Name="PART_SegmentStartTopCut"
+                        Data="M 0,0 L 0,13 L 12,13 Z"
+                        Width="12"
+                        Height="11"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="2,1"
+                        Fill="{DynamicResource CalendarSurfaceBrush}"
+                        IsHitTestVisible="False"
+                        IsVisible="False" />
+
+                    <Path x:Name="PART_SegmentStartBottomCut"
+                        Data="M 0,13 L 0,0 L 12,0 Z"
+                        Width="12"
+                        Height="11"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Margin="2,1"
+                        Fill="{DynamicResource CalendarSurfaceBrush}"
+                        IsHitTestVisible="False"
+                        IsVisible="False" />
+
+                    <!-- Continuidade pela direita: ponta -->
+                    <Path x:Name="PART_SegmentEndTopCut"
+                        Data="M 0,0 L 12,0 L 12,13 Z"
+                        Width="12"
+                        Height="13"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="2,1"
+                        Fill="{DynamicResource CalendarSurfaceBrush}"
+                        IsHitTestVisible="False"
+                        IsVisible="False" />
+
+                    <Path x:Name="PART_SegmentEndBottomCut"
+                        Data="M 0,13 L 12,13 L 12,0 Z"
+                        Width="12"
+                        Height="13"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Margin="2,1"
+                        Fill="{DynamicResource CalendarSurfaceBrush}"
+                        IsHitTestVisible="False"
+                        IsVisible="False" />
+                        
+                </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
 
-    <Style Selector="local|CalendarItemControl:continues-before Path#PART_ContinuesBefore">
+    <Style Selector="local|CalendarItemControl:segment-continues-from-previous Path#PART_SegmentStartTopCut">
         <Setter Property="IsVisible" Value="True" />
     </Style>
 
-    <Style Selector="local|CalendarItemControl:continues-after Path#PART_ContinuesAfter">
+    <Style Selector="local|CalendarItemControl:segment-continues-from-previous Path#PART_SegmentStartBottomCut">
         <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="local|CalendarItemControl:segment-continues-to-next Path#PART_SegmentEndTopCut">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="local|CalendarItemControl:segment-continues-to-next Path#PART_SegmentEndBottomCut">
+        <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="local|CalendarItemControl:segment-continues-from-previous Border#PART_ItemBorder">
+        <Setter Property="BorderThickness" Value="0,1,1,1" />
+    </Style>
+
+    <Style Selector="local|CalendarItemControl:segment-continues-to-next Border#PART_ItemBorder">
+        <Setter Property="BorderThickness" Value="1,1,0,1" />
+    </Style>
+
+    <Style Selector="local|CalendarItemControl:segment-continues-from-previous:segment-continues-to-next Border#PART_ItemBorder">
+        <Setter Property="BorderThickness" Value="0,1,0,1" />
     </Style>
 
 </Styles>

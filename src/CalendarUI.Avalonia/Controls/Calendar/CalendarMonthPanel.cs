@@ -43,6 +43,8 @@ namespace CalendarUI.Avalonia.Controls.Calendar
         public static readonly StyledProperty<double> TimeRulerWidthProperty =
             AvaloniaProperty.Register<CalendarMonthPanel, double>(nameof(TimeRulerWidth), 60.0);
 
+        private readonly Dictionary<CalendarItemControl, CalendarItemSegment> _itemSegments = new();
+
         static CalendarMonthPanel()
         {
             AffectsMeasure<CalendarMonthPanel>(ViewStartProperty, ViewEndProperty, TimeRulerWidthProperty);
@@ -138,6 +140,8 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                 _backgroundControl?.InvalidateMeasure();
                 _backgroundControl?.InvalidateVisual();
 
+                RebuildItems();
+
                 InvalidateMeasure();
                 InvalidateArrange();
                 InvalidateVisual();
@@ -175,15 +179,27 @@ namespace CalendarUI.Avalonia.Controls.Calendar
         private void RebuildItems()
         {
             Children.Clear();
+            _itemSegments.Clear();
             Children.Add(_backgroundControl);
 
             if (ItemsSource == null) return;
 
+            DateTime gridStart = GetGridStartDate();
+            DateTime gridEnd = GetGridEndDate();
+
             foreach (var item in ItemsSource)
             {
-                if (item is ICalendarItem calItem)
+                if (item is not ICalendarItem calItem)
+                    continue;
+
+                foreach (var segment in CalendarItemSegments.GetSegments(
+                    calItem,
+                    gridStart,
+                    gridEnd))
                 {
                     var control = CreateItemControl(calItem);
+
+                    _itemSegments[control] = segment;
                     Children.Add(control);
                 }
             }
@@ -192,7 +208,7 @@ namespace CalendarUI.Avalonia.Controls.Calendar
             InvalidateArrange();
         }
 
-        private Control CreateItemControl(ICalendarItem item)
+        private CalendarItemControl CreateItemControl(ICalendarItem item)
         {
             var control = new CalendarItemControl
             {
@@ -268,58 +284,54 @@ namespace CalendarUI.Avalonia.Controls.Calendar
 
                 child.ZIndex = 10;
 
-                if (child is CalendarItemControl itemControl && child.DataContext is ICalendarItem item)
+                if (child is CalendarItemControl itemControl &&
+    child.DataContext is ICalendarItem item &&
+    _itemSegments.TryGetValue(itemControl, out var segment))
                 {
+                    var visibilityState =
+                        CalendarItemVisibility.GetState(item, gridStart, gridEnd);
+
                     itemControl.SetVisibilityState(
-                        CalendarItemVisibility.GetState(item, gridStart, gridEnd));
+                        visibilityState,
+                        segment.IsFirstSegment,
+                        segment.IsLastSegment);
 
-                    DateTime itemStart = item.DateStart.Date;
-                    DateTime itemEnd = item.DateEnd.Date;
+                    itemControl.SetSegmentContinuation(
+                        !segment.IsFirstSegment,
+                        !segment.IsLastSegment);
 
-                    int startOffset = (itemStart - gridStart).Days;
-                    int endOffset = (itemEnd - gridStart).Days;
+                    int segmentStart = (segment.WeekRow * 7) + segment.DayColumn;
+                    int slot = 0;
 
-                    if (endOffset >= 0 && startOffset < totalDays)
+                    for (int d = 0; d < segment.DayCount; d++)
                     {
-                        int validStart = Math.Max(0, startOffset);
-                        int validEnd = Math.Min(totalDays - 1, endOffset);
+                        slot = Math.Max(slot, daySlots[segmentStart + d]);
+                    }
 
-                        int weekRow = validStart / 7;
-                        int dayCol = validStart % 7;
+                    for (int d = 0; d < segment.DayCount; d++)
+                    {
+                        daySlots[segmentStart + d] = slot + 1;
+                    }
 
-                        int durationDays = validEnd - validStart + 1;
-                        int daysSpanInWeek = Math.Min(durationDays, 7 - dayCol);
+                    double x = rulerWidth + (segment.DayColumn * cellWidth) + 2.0;
+                    double weekTopY = segment.WeekRow * cellHeight;
 
-                        int slot = 0;
-                        for (int d = 0; d < daysSpanInWeek; d++)
-                        {
-                            if (validStart + d < totalDays)
-                                slot = Math.Max(slot, daySlots[validStart + d]);
-                        }
+                    double headerHeight =
+                        (segment.WeekRow == 0) ? 58.0 : 36.0;
 
-                        for (int d = 0; d < daysSpanInWeek; d++)
-                        {
-                            if (validStart + d < totalDays)
-                                daySlots[validStart + d] = slot + 1;
-                        }
+                    double itemHeight = 26.0;
 
-                        double x = rulerWidth + (dayCol * cellWidth) + 2.0;
-                        double weekTopY = weekRow * cellHeight;
+                    double y =
+                        weekTopY +
+                        headerHeight +
+                        (slot * (itemHeight + 2.0));
 
-                        double headerHeight = (weekRow == 0) ? 58.0 : 36.0;
-                        double itemHeight = 26.0;
+                    double width =
+                        Math.Max(0, (cellWidth * segment.DayCount) - 4.0);
 
-                        double y = weekTopY + headerHeight + (slot * (itemHeight + 2.0));
-                        double width = Math.Max(0, (cellWidth * daysSpanInWeek) - 4.0);
-
-                        if (y + itemHeight <= weekTopY + cellHeight || slot == 0)
-                        {
-                            child.Arrange(new Rect(x, y, width, itemHeight));
-                        }
-                        else
-                        {
-                            child.Arrange(new Rect(0, 0, 0, 0));
-                        }
+                    if (y + itemHeight <= weekTopY + cellHeight || slot == 0)
+                    {
+                        child.Arrange(new Rect(x, y, width, itemHeight));
                     }
                     else
                     {

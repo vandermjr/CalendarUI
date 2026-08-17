@@ -88,7 +88,6 @@ public class MainViewModel : ViewModelBase
                 BackgroundColor = Color.Parse("#27AE60"),
                 ForeColor = Colors.White
             },
-
             new CalendarItem
             {
                 Text = "Evento de vários dias",
@@ -98,7 +97,6 @@ public class MainViewModel : ViewModelBase
                 BackgroundColor = Color.Parse("#2980B9"),
                 ForeColor = Colors.White
             },
-
             new CalendarItem
             {
                 Text = "Falta data antes",
@@ -108,7 +106,6 @@ public class MainViewModel : ViewModelBase
                 BackgroundColor = Color.Parse("#C0392B"),
                 ForeColor = Colors.White
             },
-
             new CalendarItem
             {
                 Text = "Falta data depois",
@@ -118,13 +115,75 @@ public class MainViewModel : ViewModelBase
                 BackgroundColor = Color.Parse("#16A085"),
                 ForeColor = Colors.White
             },
-
             new CalendarItem
             {
                 Text = "Falta data antes e depois",
                 Range = EventRange
                     .From(2026, 8, 10)
                     .To(2026, 8, 30),
+                BackgroundColor = Color.Parse("#E74C3C"),
+                ForeColor = Colors.White
+            },
+            new CalendarItem
+            {
+                Text = "Equipe 1 - mesmo horário",
+                Range = EventRange
+                    .From(2026, 8, 18, 9, 0)
+                    .To(2026, 8, 18, 10, 0),
+                BackgroundColor = Color.Parse("#3498DB"),
+                ForeColor = Colors.White
+            },
+            new CalendarItem
+            {
+                Text = "Equipe 2 - mesmo horário",
+                Range = EventRange
+                    .From(2026, 8, 18, 9, 0)
+                    .To(2026, 8, 18, 10, 0),
+                BackgroundColor = Color.Parse("#2ECC71"),
+                ForeColor = Colors.White
+            },
+            new CalendarItem
+            {
+                Text = "Equipe 3 - mesmo horário",
+                Range = EventRange
+                    .From(2026, 8, 18, 9, 0)
+                    .To(2026, 8, 18, 10, 0),
+                BackgroundColor = Color.Parse("#E67E22"),
+                ForeColor = Colors.White
+            },
+            new CalendarItem
+            {
+                Text = "Equipe 4 - mesmo horário",
+                Range = EventRange
+                    .From(2026, 8, 18, 9, 0)
+                    .To(2026, 8, 18, 10, 0),
+                BackgroundColor = Color.Parse("#9B59B6"),
+                ForeColor = Colors.White
+            },
+            new CalendarItem
+            {
+                Text = "Equipe A - vários dias",
+                Range = EventRange
+                    .From(2026, 8, 17)
+                    .To(2026, 8, 19),
+                BackgroundColor = Color.Parse("#1ABC9C"),
+                ForeColor = Colors.White
+            },
+            new CalendarItem
+            {
+                Text = "Equipe B - mesmos dias",
+                Range = EventRange
+                    .From(2026, 8, 17)
+                    .To(2026, 8, 19),
+                BackgroundColor = Color.Parse("#F1C40F"),
+                ForeColor = Colors.Black
+            },
+            new CalendarItem
+            {
+                Text = "Equipe C - mesmos dias",
+                Range = EventRange
+                    .From(2026, 8, 17)
+                    .To(2026, 8, 19),
                 BackgroundColor = Color.Parse("#E74C3C"),
                 ForeColor = Colors.White
             }
