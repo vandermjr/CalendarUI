@@ -69,28 +69,32 @@
                     </ToolTip.Tip>
 
                     <!-- Conteúdo do Card -->
-                    <Grid ColumnDefinitions="6, *">
+                    <Grid ColumnDefinitions="14, *">
                         <!-- Indicador de continuidade: só aparece quando parte do evento está fora da grade visível. -->
                         <Grid Grid.Column="0" RowDefinitions="Auto, *, Auto">
                             <Path x:Name="PART_ContinuesBefore"
-                                  Grid.Row="0"
-                                  Data="M 1,5 L 3,1 L 5,5"
-                                  Width="6"
-                                  Height="6"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  IsVisible="False"
-                                  Fill="{DynamicResource CalendarItemVisibilityWarningBrush}" />
+                                Grid.Row="0"
+                                Data="M 2,8 L 7,2 L 12,8"
+                                Width="12"
+                                Height="12"
+                                Stroke="White"
+                                StrokeThickness="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                IsVisible="False"
+                                Fill="{DynamicResource CalendarItemVisibilityWarningBrush}" />
 
                             <Path x:Name="PART_ContinuesAfter"
-                                  Grid.Row="2"
-                                  Data="M 1,1 L 3,5 L 5,1"
-                                  Width="6"
-                                  Height="6"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  IsVisible="False"
-                                  Fill="{DynamicResource CalendarItemVisibilityWarningBrush}" />
+                                Grid.Row="2"
+                                Data="M 2,2 L 7,8 L 12,2"
+                                Width="12"
+                                Height="12"
+                                Stroke="White"
+                                StrokeThickness="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                IsVisible="False"
+                                Fill="{DynamicResource CalendarItemVisibilityWarningBrush}" />
                         </Grid>
 
                         <!-- Título do Compromisso -->

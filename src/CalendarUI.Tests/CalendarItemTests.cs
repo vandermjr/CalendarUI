@@ -32,4 +32,17 @@ public class CalendarItemTests
 
         Assert.False(item.IsAllDay);
     }
+
+    [Fact]
+    public void Range_UpdatesDateStartAndDateEnd()
+    {
+        var item = new CalendarItem();
+
+        item.Range = EventRange
+            .From(2026, 8, 10, 8, 30)
+            .To(2026, 8, 10, 10, 0);
+
+        Assert.Equal(new DateTime(2026, 8, 10, 8, 30, 0), item.DateStart);
+        Assert.Equal(new DateTime(2026, 8, 10, 10, 0, 0), item.DateEnd);
+    }
 }

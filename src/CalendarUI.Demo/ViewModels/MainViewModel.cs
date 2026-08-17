@@ -11,8 +11,8 @@ public class MainViewModel : ViewModelBase
 {
     private bool _isSidebarOpen = true;
     private bool _isDarkTheme;
-    private DateTime _viewStart = DateTime.Today;
-    private DateTime _viewEnd = DateTime.Today.AddDays(6);
+    private DateTime _viewStart = new(2026, 8, 16);
+    private DateTime _viewEnd = new(2026, 8, 22);
 
     public ObservableCollection<ICalendarItem> Appointments { get; }
 
@@ -77,49 +77,56 @@ public class MainViewModel : ViewModelBase
 
     public MainViewModel()
     {
-        var today = DateTime.Today;
-
         Appointments = new ObservableCollection<ICalendarItem>
         {
             new CalendarItem
             {
-                Text = "First Release",
-                DateStart = today.AddHours(0.5),
-                DateEnd = today.AddHours(1.5),
+                Text = "Evento de um dia",
+                Range = EventRange
+                    .From(2026, 8, 16, 9, 0)
+                    .To(2026, 8, 16, 10, 0),
                 BackgroundColor = Color.Parse("#27AE60"),
                 ForeColor = Colors.White
             },
+
             new CalendarItem
             {
-                Text = "Some appointment",
-                DateStart = today.AddDays(1).AddHours(8.5),
-                DateEnd = today.AddDays(1).AddHours(10),
+                Text = "Evento de vários dias",
+                Range = EventRange
+                    .From(2026, 8, 17)
+                    .To(2026, 8, 19),
                 BackgroundColor = Color.Parse("#2980B9"),
                 ForeColor = Colors.White
             },
+
             new CalendarItem
             {
-                Text = "Some meeting",
-                DateStart = today.AddDays(1).AddHours(10),
-                DateEnd = today.AddDays(1).AddHours(10.5),
-                BackgroundColor = Color.Parse("#E67E22"),
+                Text = "Falta data antes",
+                Range = EventRange
+                    .From(2026, 8, 12)
+                    .To(2026, 8, 17),
+                BackgroundColor = Color.Parse("#C0392B"),
                 ForeColor = Colors.White
             },
+
             new CalendarItem
             {
-                Text = "It will be a boring day",
-                DateStart = today.AddDays(2).AddHours(11.5),
-                DateEnd = today.AddDays(2).AddHours(12.5),
-                BackgroundColor = Color.Parse("#8E44AD"),
+                Text = "Falta data depois",
+                Range = EventRange
+                    .From(2026, 8, 21)
+                    .To(2026, 8, 26),
+                BackgroundColor = Color.Parse("#16A085"),
                 ForeColor = Colors.White
             },
+
             new CalendarItem
             {
-                Text = "Lazy days",
-                DateStart = today.AddDays(3),
-                DateEnd = today.AddDays(4).AddHours(23).AddMinutes(59),
-                BackgroundColor = Color.Parse("#F1C40F"),
-                ForeColor = Colors.Black
+                Text = "Falta data antes e depois",
+                Range = EventRange
+                    .From(2026, 8, 10)
+                    .To(2026, 8, 30),
+                BackgroundColor = Color.Parse("#E74C3C"),
+                ForeColor = Colors.White
             }
         };
     }

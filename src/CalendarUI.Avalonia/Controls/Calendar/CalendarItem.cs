@@ -19,6 +19,16 @@ public class CalendarItem : ICalendarItem
     public bool IsAllDay => (DateEnd - DateStart).TotalHours >= 24 ||
                             (DateStart.TimeOfDay == TimeSpan.Zero && DateEnd.TimeOfDay == TimeSpan.Zero);
 
+    public EventRange Range
+    {
+        get => new(DateStart, DateEnd);
+        set
+        {
+            DateStart = value.Start;
+            DateEnd = value.End;
+        }
+    }
+
     // Construtor vazio
     public CalendarItem()
     {

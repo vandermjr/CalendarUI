@@ -307,7 +307,7 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                         double weekTopY = weekRow * cellHeight;
 
                         double headerHeight = (weekRow == 0) ? 58.0 : 36.0;
-                        double itemHeight = 20.0;
+                        double itemHeight = 26.0;
 
                         double y = weekTopY + headerHeight + (slot * (itemHeight + 2.0));
                         double width = Math.Max(0, (cellWidth * daysSpanInWeek) - 4.0);
