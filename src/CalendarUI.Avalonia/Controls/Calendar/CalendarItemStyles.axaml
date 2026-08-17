@@ -60,10 +60,10 @@
                                     </Grid>
 
                                     <Grid ColumnDefinitions="Auto, *">
-                                        <TextBlock Text="Horário:" 
-                                                FontWeight="SemiBold" 
-                                                FontSize="11" 
-                                                Foreground="{DynamicResource CalendarTextSecondaryBrush}" 
+                                        <TextBlock Text="Horário:"
+                                                FontWeight="SemiBold"
+                                                FontSize="11"
+                                                Foreground="{DynamicResource CalendarTextSecondaryBrush}"
                                                 Margin="0,0,8,0" />
                                         <TextBlock Grid.Column="1" FontSize="11" Foreground="{DynamicResource CalendarTextPrimaryBrush}">
                                             <TextBlock.Text>
@@ -81,14 +81,14 @@
                         <!-- Conteúdo do Card -->
                         <Grid>
                             <!-- Título do Compromisso -->
-                            <TextBlock Grid.Column="1" 
+                            <TextBlock Grid.Column="1"
                                     Text="{Binding Text}"
                                     FontWeight="SemiBold"
                                     FontSize="11"
                                     Foreground="{Binding ForeColor, Converter={StaticResource ColorToBrushConverter}}"
                                     VerticalAlignment="Center"
                                     TextWrapping="NoWrap"
-                                    TextTrimming="CharacterEllipsis" 
+                                    TextTrimming="CharacterEllipsis"
                                     Margin="12,1,4,1"/>
                         </Grid>
                     </Border>
@@ -138,7 +138,7 @@
                         Fill="{DynamicResource CalendarSurfaceBrush}"
                         IsHitTestVisible="False"
                         IsVisible="False" />
-                        
+
                 </Grid>
             </ControlTemplate>
         </Setter>

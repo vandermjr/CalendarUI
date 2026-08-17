@@ -29,5 +29,5 @@ public class CalendarItemSegmentsTests
         Assert.Equal(7, segments[1].DayCount);
         Assert.False(segments[1].IsFirstSegment);
         Assert.True(segments[1].IsLastSegment);
-    }    
+    }
 }
