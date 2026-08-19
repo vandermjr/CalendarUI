@@ -31,11 +31,16 @@
                                     BoxShadow="{DynamicResource CalendarTooltipShadow}"
                                     MaxWidth="300">
                                 <StackPanel Spacing="6">
+                                    <TextBlock Text="{Binding Title}"
+                                        FontWeight="Bold"
+                                        FontSize="13"
+                                        Foreground="{DynamicResource CalendarTextPrimaryBrush}"
+                                        TextWrapping="Wrap" />
                                     <TextBlock Text="{Binding Text}"
-                                            FontWeight="Bold"
-                                            FontSize="13"
-                                            Foreground="{DynamicResource CalendarTextPrimaryBrush}"
-                                            TextWrapping="Wrap" />
+                                            FontSize="11"
+                                            Foreground="{DynamicResource CalendarTextSecondaryBrush}"
+                                            TextWrapping="Wrap"
+                                            IsVisible="{Binding Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
 
                                     <Separator Background="{DynamicResource CalendarGridLineBrush}" Height="1" Margin="0,2" />
 
@@ -79,25 +84,25 @@
                         </ToolTip.Tip>
 
                         <!-- Conteúdo do Card -->
-                        <Grid>
-                            <!-- Título do Compromisso -->
-                            <TextBlock Grid.Column="1"
-                                    Text="{Binding Text}"
-                                    FontWeight="SemiBold"
-                                    FontSize="11"
-                                    Foreground="{Binding ForeColor, Converter={StaticResource ColorToBrushConverter}}"
-                                    VerticalAlignment="Center"
-                                    TextWrapping="NoWrap"
-                                    TextTrimming="CharacterEllipsis"
-                                    Margin="12,1,4,1"/>
+                        <Grid Margin="12,2,4,2">
+                            <TextBlock Grid.Row="0"
+                                Text="{Binding Title}"
+                                FontWeight="SemiBold"
+                                FontSize="11"
+                                Foreground="{Binding ForeColor, Converter={StaticResource ColorToBrushConverter}}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Top"
+                                TextAlignment="Center"
+                                TextWrapping="NoWrap"
+                                TextTrimming="CharacterEllipsis" />
                         </Grid>
                     </Border>
 
                     <!-- Continuidade pela esquerda: cavidade -->
                     <Path x:Name="PART_SegmentStartTopCut"
-                        Data="M 0,0 L 0,13 L 12,13 Z"
+                        Data="M 0,0 L 0,16 L 12,16 Z"
                         Width="12"
-                        Height="11"
+                        Height="16"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Margin="2,1"
@@ -106,9 +111,9 @@
                         IsVisible="False" />
 
                     <Path x:Name="PART_SegmentStartBottomCut"
-                        Data="M 0,13 L 0,0 L 12,0 Z"
+                        Data="M 0,16 L 0,0 L 12,0 Z"
                         Width="12"
-                        Height="11"
+                        Height="16"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom"
                         Margin="2,1"
@@ -118,9 +123,9 @@
 
                     <!-- Continuidade pela direita: ponta -->
                     <Path x:Name="PART_SegmentEndTopCut"
-                        Data="M 0,0 L 12,0 L 12,13 Z"
+                        Data="M 0,0 L 12,0 L 12,16 Z"
                         Width="12"
-                        Height="13"
+                        Height="16"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Margin="2,1"
@@ -129,9 +134,9 @@
                         IsVisible="False" />
 
                     <Path x:Name="PART_SegmentEndBottomCut"
-                        Data="M 0,13 L 12,13 L 12,0 Z"
+                        Data="M 0,16 L 12,16 L 12,0 Z"
                         Width="12"
-                        Height="13"
+                        Height="16"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Margin="2,1"

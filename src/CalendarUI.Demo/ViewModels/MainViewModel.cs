@@ -81,7 +81,8 @@ public class MainViewModel : ViewModelBase
         {
             new CalendarItem
             {
-                Text = "Evento de um dia",
+                Title = "Evento de um dia",
+                Text = "teste 1",
                 Range = EventRange
                     .From(2026, 8, 16, 9, 0)
                     .To(2026, 8, 16, 10, 0),
@@ -90,7 +91,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Evento de vários dias",
+                    Title = "Evento de vários dias",
+                    Text = "Compromisso que ocupa vários dias",
                 Range = EventRange
                     .From(2026, 8, 17)
                     .To(2026, 8, 19),
@@ -99,7 +101,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Falta data antes",
+                Title = "Falta data antes",
+                Text = "teste 2",
                 Range = EventRange
                     .From(2026, 8, 12)
                     .To(2026, 8, 17),
@@ -108,7 +111,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Falta data depois",
+                Title = "Falta data depois",
+                Text = "teste 3",
                 Range = EventRange
                     .From(2026, 8, 21)
                     .To(2026, 8, 26),
@@ -117,7 +121,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Falta data antes e depois",
+                Title = "Falta data antes e depois",
+                Text = "teste 4",
                 Range = EventRange
                     .From(2026, 8, 10)
                     .To(2026, 8, 30),
@@ -126,7 +131,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Equipe 1 - mesmo horário",
+                Title = "Equipe 1 - mesmo horário",
+                Text = "teste 5",
                 Range = EventRange
                     .From(2026, 8, 18, 9, 0)
                     .To(2026, 8, 18, 10, 0),
@@ -135,7 +141,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Equipe 2 - mesmo horário",
+                Title = "Equipe 2 - mesmo horário",
+                Text = "teste 6",
                 Range = EventRange
                     .From(2026, 8, 18, 9, 0)
                     .To(2026, 8, 18, 10, 0),
@@ -144,7 +151,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Equipe 3 - mesmo horário",
+                Title = "Equipe 3 - mesmo horário",
+                Text = "teste 7",
                 Range = EventRange
                     .From(2026, 8, 18, 9, 0)
                     .To(2026, 8, 18, 10, 0),
@@ -153,7 +161,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Equipe 4 - mesmo horário",
+                Title = "Equipe 4 - mesmo horário",
+                Text = "teste 8",
                 Range = EventRange
                     .From(2026, 8, 18, 9, 0)
                     .To(2026, 8, 18, 10, 0),
@@ -162,7 +171,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Equipe A - vários dias",
+                Title = "Equipe A - vários dias",
+                Text = "teste 9",
                 Range = EventRange
                     .From(2026, 8, 17)
                     .To(2026, 8, 19),
@@ -171,7 +181,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Equipe B - mesmos dias",
+                Title = "Equipe B - mesmos dias",
+                Text = "teste 10",
                 Range = EventRange
                     .From(2026, 8, 17)
                     .To(2026, 8, 19),
@@ -180,7 +191,8 @@ public class MainViewModel : ViewModelBase
             },
             new CalendarItem
             {
-                Text = "Equipe C - mesmos dias",
+                Title = "Equipe C - mesmos dias",
+                Text = "teste 11",
                 Range = EventRange
                     .From(2026, 8, 17)
                     .To(2026, 8, 19),

@@ -57,6 +57,12 @@ namespace CalendarUI.Avalonia.Controls.Calendar
 
         private readonly CalendarGridBackground _backgroundControl;
 
+        private const double ItemHeight = 32.0;
+        private const double StackOffset = 17.0;
+        private const double AllDayAreaSpacing = 4.0;
+
+        private readonly Dictionary<CalendarItemControl, int> _allDayStackIndexes = new();
+
         public CalendarDayPanel()
         {
             this.UseLayoutRounding = true;
@@ -119,22 +125,32 @@ namespace CalendarUI.Avalonia.Controls.Calendar
         private void RebuildItemControls()
         {
             Children.Clear();
+            _allDayStackIndexes.Clear();
+
             Children.Add(_backgroundControl);
 
-            if (ItemsSource == null) return;
+            if (ItemsSource == null)
+                return;
+
+            int allDayIndex = 0;
 
             foreach (var rawItem in ItemsSource)
             {
-                if (rawItem is ICalendarItem item)
-                {
-                    var itemControl = new CalendarItemControl
-                    {
-                        Item = item,
-                        DataContext = item
-                    };
+                if (rawItem is not ICalendarItem item)
+                    continue;
 
-                    Children.Add(itemControl);
+                var itemControl = new CalendarItemControl
+                {
+                    Item = item,
+                    DataContext = item
+                };
+
+                if (item.IsAllDay)
+                {
+                    _allDayStackIndexes[itemControl] = allDayIndex++;
                 }
+
+                Children.Add(itemControl);
             }
 
             InvalidateMeasure();
@@ -163,78 +179,180 @@ namespace CalendarUI.Avalonia.Controls.Calendar
         protected override Size ArrangeOverride(Size finalSize)
         {
             int totalDays = GetTotalDays();
-            double gridWidth = Math.Max(0, finalSize.Width - TimeRulerWidth);
-            double dayWidth = gridWidth / totalDays;
-            int totalHours = Math.Max(1, DayEndHour - DayStartHour);
-            double effectiveHourHeight = finalSize.Height / totalHours;
+
+            double gridWidth =
+                Math.Max(0, finalSize.Width - TimeRulerWidth);
+
+            double dayWidth =
+                gridWidth / totalDays;
+
+            int totalHours =
+                Math.Max(1, DayEndHour - DayStartHour);
+
+            var allDayControls = new List<(CalendarItemControl Control, ICalendarItem Item)>();
 
             foreach (Control child in Children)
             {
                 if (child == _backgroundControl)
-                {
-                    child.ZIndex = 0;
-                    child.Arrange(new Rect(0, 0, finalSize.Width, finalSize.Height));
                     continue;
-                }
+
+                if (child is not CalendarItemControl itemControl)
+                    continue;
+
+                ICalendarItem? item =
+                    itemControl.DataContext as ICalendarItem ??
+                    itemControl.Item;
+
+                if (item == null)
+                    continue;
+
+                if (item.IsAllDay)
+                    allDayControls.Add((itemControl, item));
+            }
+
+            double allDayAreaHeight = allDayControls.Count == 0
+                ? 0
+                : ItemHeight +
+                  ((allDayControls.Count - 1) * StackOffset) +
+                  AllDayAreaSpacing;
+
+            double timedAreaHeight =
+                Math.Max(0, finalSize.Height - allDayAreaHeight);
+
+            double effectiveHourHeight =
+                timedAreaHeight / totalHours;
+
+            if (_backgroundControl != null)
+            {
+                _backgroundControl.ZIndex = 0;
+                _backgroundControl.Arrange(
+                    new Rect(
+                        0,
+                        0,
+                        finalSize.Width,
+                        finalSize.Height));
+            }
+
+            foreach (Control child in Children)
+            {
+                if (child == _backgroundControl)
+                    continue;
 
                 child.ZIndex = 10;
 
-                ICalendarItem? item = child.DataContext as ICalendarItem;
-                if (item == null && child is CalendarItemControl itemCtrl)
+                if (child is not CalendarItemControl itemControl)
+                    continue;
+
+                ICalendarItem? item =
+                    itemControl.DataContext as ICalendarItem ??
+                    itemControl.Item;
+
+                if (item == null)
                 {
-                    item = itemCtrl.Item;
+                    child.Arrange(new Rect(0, 0, 0, 0));
+                    continue;
                 }
 
-                if (item != null)
+                CalendarItemVisibilityState visibilityState =
+                    CalendarItemVisibility.GetState(
+                        item,
+                        ViewStart.Date,
+                        ViewEnd.Date);
+
+                bool continuesBefore =
+                    visibilityState is
+                        CalendarItemVisibilityState.StartsBeforeView
+                        or CalendarItemVisibilityState.ExtendsBeyondView;
+
+                bool continuesAfter =
+                    visibilityState is
+                        CalendarItemVisibilityState.EndsAfterView
+                        or CalendarItemVisibilityState.ExtendsBeyondView;
+
+                itemControl.SetSegmentContinuation(
+                    continuesBefore,
+                    continuesAfter);
+
+                int startDayOffset =
+                    (item.DateStart.Date - ViewStart.Date).Days;
+
+                int endDayOffset =
+                    (item.DateEnd.Date - ViewStart.Date).Days;
+
+                if (item.DateEnd.TimeOfDay == TimeSpan.Zero &&
+                    item.DateEnd > item.DateStart)
                 {
-                    int startDayOffset = (item.DateStart.Date - ViewStart.Date).Days;
-                    int endDayOffset = (item.DateEnd.Date - ViewStart.Date).Days;
-
-                    if (item.DateEnd.TimeOfDay == TimeSpan.Zero && item.DateEnd > item.DateStart)
-                    {
-                        endDayOffset--;
-                    }
-
-                    if (endDayOffset >= 0 && startDayOffset < totalDays)
-                    {
-                        int visibleStartDay = Math.Max(0, startDayOffset);
-                        int visibleEndDay = Math.Min(totalDays - 1, endDayOffset);
-                        int daySpan = Math.Max(1, visibleEndDay - visibleStartDay + 1);
-
-                        double x = TimeRulerWidth + (visibleStartDay * dayWidth);
-                        double width = dayWidth * daySpan;
-
-                        double y;
-                        double height;
-
-                        double totalDurationHours = (item.DateEnd - item.DateStart).TotalHours;
-                        bool isMultiDay = totalDurationHours >= 24.0 || item.DateStart.Date != item.DateEnd.Date;
-
-                        if (isMultiDay)
-                        {
-                            y = 0;
-                            height = finalSize.Height;
-                        }
-                        else
-                        {
-                            double startHourFraction = item.DateStart.TimeOfDay.TotalHours - DayStartHour;
-                            startHourFraction = Math.Max(0, startHourFraction);
-
-                            y = startHourFraction * effectiveHourHeight;
-                            height = Math.Max(22.0, totalDurationHours * effectiveHourHeight);
-                        }
-
-                        child.Arrange(new Rect(x, y, width, height));
-                    }
-                    else
-                    {
-                        child.Arrange(new Rect(0, 0, 0, 0));
-                    }
+                    endDayOffset--;
                 }
-                else
+
+                if (endDayOffset < 0 ||
+                    startDayOffset >= totalDays)
                 {
-                    child.Arrange(new Rect(0, 0, finalSize.Width, finalSize.Height));
+                    child.Arrange(new Rect(0, 0, 0, 0));
+                    continue;
                 }
+
+                int visibleStartDay =
+                    Math.Max(0, startDayOffset);
+
+                int visibleEndDay =
+                    Math.Min(totalDays - 1, endDayOffset);
+
+                int daySpan =
+                    Math.Max(
+                        1,
+                        visibleEndDay - visibleStartDay + 1);
+
+                double x =
+                    TimeRulerWidth +
+                    (visibleStartDay * dayWidth);
+
+                double width =
+                    dayWidth * daySpan;
+
+                if (item.IsAllDay)
+                {
+                    int stackIndex =
+                        _allDayStackIndexes[itemControl];
+
+                    double y =
+                        stackIndex * StackOffset;
+
+                    child.Arrange(
+                        new Rect(
+                            x,
+                            y,
+                            width,
+                            ItemHeight));
+
+                    continue;
+                }
+
+                double startHourFraction =
+                    item.DateStart.TimeOfDay.TotalHours -
+                    DayStartHour;
+
+                startHourFraction =
+                    Math.Max(0, startHourFraction);
+
+                double yTimed =
+                    allDayAreaHeight +
+                    (startHourFraction * effectiveHourHeight);
+
+                double totalDurationHours =
+                    (item.DateEnd - item.DateStart).TotalHours;
+
+                double height =
+                    Math.Max(
+                        ItemHeight,
+                        totalDurationHours * effectiveHourHeight);
+
+                child.Arrange(
+                    new Rect(
+                        x,
+                        yTimed,
+                        width,
+                        height));
             }
 
             return finalSize;

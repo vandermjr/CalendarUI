@@ -48,8 +48,8 @@ internal static class CalendarItemSegments
                 weekRow,
                 (segmentStart - weekStart).Days,
                 (segmentEnd - segmentStart).Days + 1,
-                weekRow == firstWeek,
-                weekRow == lastWeek);
+                segmentStart == itemStart,
+                segmentEnd == itemEnd);
         }
     }
 }

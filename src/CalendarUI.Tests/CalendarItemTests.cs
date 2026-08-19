@@ -45,4 +45,14 @@ public class CalendarItemTests
         Assert.Equal(new DateTime(2026, 8, 10, 8, 30, 0), item.DateStart);
         Assert.Equal(new DateTime(2026, 8, 10, 10, 0, 0), item.DateEnd);
     }
+
+    [Fact]
+    public void Title_CanBeSet()
+    {
+        var item = new CalendarItem();
+
+        item.Title = "Reunião de planejamento";
+
+        Assert.Equal("Reunião de planejamento", item.Title);
+    }
 }

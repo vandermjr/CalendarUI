@@ -7,6 +7,7 @@ public class CalendarItem : ICalendarItem
 {
     public DateTime DateStart { get; set; }
     public DateTime DateEnd { get; set; }
+    public string Title { get; set; } = string.Empty;
     public string Text { get; set; } = string.Empty;
     public Color BackgroundColor { get; set; } = Colors.DodgerBlue;
     public Color ForeColor { get; set; } = Colors.White;
