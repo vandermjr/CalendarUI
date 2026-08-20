@@ -131,15 +131,20 @@
                             <Grid RowDefinitions="*" ColumnDefinitions="*"
                                 IsVisible="{Binding DaysMode, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static local:CalendarDaysMode.Short}}">
 
-                                <local:CalendarMonthPanel Grid.Row="0" Grid.Column="0"
-                                                        ViewStart="{TemplateBinding ViewStart}"
-                                                        ViewEnd="{TemplateBinding ViewEnd}"
-                                                        ItemsSource="{TemplateBinding ItemsSource}"
-                                                        GridBackgroundBrush="{DynamicResource CalendarBackgroundBrush}"
-                                                        RulerBackgroundBrush="{DynamicResource CalendarHeaderBackgroundBrush}"
-                                                        LineBrush="{DynamicResource CalendarGridLineBrush}"
-                                                        TextBrush="{DynamicResource CalendarTextPrimaryBrush}"
-                                                        TodayBrush="{DynamicResource CalendarTodayBrush}" />
+                                <ScrollViewer Grid.Row="0"
+                                            Grid.Column="0"
+                                            HorizontalScrollBarVisibility="Disabled"
+                                            VerticalScrollBarVisibility="Auto">
+
+                                    <local:CalendarMonthPanel ViewStart="{TemplateBinding ViewStart}"
+                                                            ViewEnd="{TemplateBinding ViewEnd}"
+                                                            ItemsSource="{TemplateBinding ItemsSource}"
+                                                            GridBackgroundBrush="{DynamicResource CalendarBackgroundBrush}"
+                                                            RulerBackgroundBrush="{DynamicResource CalendarHeaderBackgroundBrush}"
+                                                            LineBrush="{DynamicResource CalendarGridLineBrush}"
+                                                            TextBrush="{DynamicResource CalendarTextPrimaryBrush}"
+                                                            TodayBrush="{DynamicResource CalendarTodayBrush}" />
+                                </ScrollViewer>
                             </Grid>
 
                         </Grid>

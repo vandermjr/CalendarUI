@@ -267,15 +267,76 @@ namespace CalendarUI.Avalonia.Controls.Calendar
 
         public int GetTotalDays() => GetTotalWeeks() * 7;
 
+        private double GetRequiredWeekHeight()
+        {
+            const double firstWeekHeaderHeight = 58.0;
+            const double weekHeaderHeight = 36.0;
+            const double itemHeight = 32.0;
+            const double stackOffset = 17.0;
+
+            var weekHeights = new Dictionary<int, double>();
+
+            foreach (var placement in _itemStackPlacements.Values)
+            {
+                int weekRow = placement.Item.Segment.WeekRow;
+
+                double headerHeight =
+                    weekRow == 0
+                        ? firstWeekHeaderHeight
+                        : weekHeaderHeight;
+
+                double requiredHeight =
+                    headerHeight +
+                    (placement.StackIndex * stackOffset) +
+                    itemHeight;
+
+                if (!weekHeights.TryGetValue(weekRow, out double currentHeight) ||
+                    requiredHeight > currentHeight)
+                {
+                    weekHeights[weekRow] = requiredHeight;
+                }
+            }
+
+            double requiredWeekHeight =
+                Math.Max(
+                    firstWeekHeaderHeight + itemHeight,
+                    weekHeaderHeight + itemHeight);
+
+            foreach (double weekHeight in weekHeights.Values)
+            {
+                requiredWeekHeight = Math.Max(
+                    requiredWeekHeight,
+                    weekHeight);
+            }
+
+            return requiredWeekHeight;
+        }
+        
         protected override Size MeasureOverride(Size availableSize)
         {
             _backgroundControl.Measure(availableSize);
+
             foreach (Control child in Children)
             {
                 if (child != _backgroundControl)
                     child.Measure(availableSize);
             }
-            return availableSize;
+
+            int totalWeeks = GetTotalWeeks();
+
+            if (totalWeeks <= 0)
+                return availableSize;
+
+            double requiredWeekHeight = GetRequiredWeekHeight();
+            double requiredHeight = requiredWeekHeight * totalWeeks;
+
+            double height = double.IsInfinity(availableSize.Height)
+                ? requiredHeight
+                : Math.Max(availableSize.Height, requiredHeight);
+
+            return new Size(
+                availableSize.Width,
+                height);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -364,19 +425,12 @@ namespace CalendarUI.Avalonia.Controls.Calendar
                         0,
                         (cellWidth * segment.DayCount) - 4.0);
 
-                if (y + itemHeight <= weekTopY + cellHeight)
-                {
-                    child.Arrange(
-                        new Rect(
-                            x,
-                            y,
-                            width,
-                            itemHeight));
-                }
-                else
-                {
-                    child.Arrange(new Rect(0, 0, 0, 0));
-                }
+                child.Arrange(
+                    new Rect(
+                        x,
+                        y,
+                        width,
+                        itemHeight));
             }
 
             return finalSize;
