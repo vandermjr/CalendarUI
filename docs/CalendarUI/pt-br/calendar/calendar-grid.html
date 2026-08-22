@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade do Calendário — CalendarUI</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="docs-nav" aria-label="Documentation navigation">
+    <div class="brand">CalendarUI</div>
+    <div class="nav-group nav-group-single">
+        <a class="nav-page " href="../index.html">Introdução</a>
+        <div class="nav-children">
+            <a class="nav-child" href="../index.html#o-que-e-o-calendarui">O que é o CalendarUI?</a>
+            <a class="nav-child" href="../index.html#para-que-serve">Para que serve?</a>
+            <a class="nav-child" href="../index.html#como-a-ferramenta-e-organizada">Como a ferramenta é organizada?</a>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">Calendário</div>
+        <div class="nav-item">
+            <a class="nav-page " href="mini-calendar.html">Mini Calendário</a>
+            <div class="nav-children">
+                <a class="nav-child" href="mini-calendar.html#o-que-faz">O que faz?</a>
+                <a class="nav-child" href="mini-calendar.html#week-row">Week Row</a>
+                <a class="nav-child" href="mini-calendar.html#day">Day</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a class="nav-page active" href="calendar-grid.html" aria-current="page">Grade do Calendário</a>
+            <div class="nav-children">
+                <a class="nav-child" href="calendar-grid.html#week">Week</a>
+                <a class="nav-child" href="calendar-grid.html#event-segment">Event Segment</a>
+                <a class="nav-child" href="calendar-grid.html#event-stack">Event Stack</a>
+            </div>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">Eventos</div>
+        <div class="nav-item">
+            <a class="nav-page " href="../events/event.html">Evento</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../events/event.html#evento-e-segmentos-do-evento">Evento e Segmentos do Evento</a>
+                <a class="nav-child" href="../events/event.html#pilha-de-eventos">Pilha de Eventos</a>
+            </div>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">Modos de Visualização</div>
+        <div class="nav-item">
+            <a class="nav-page " href="../views/expanded-view.html">Visualização Expandida</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../views/expanded-view.html#quando-e-usada">Quando é usada?</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a class="nav-page " href="../views/short-view.html">Visualização Curta</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../views/short-view.html#quando-e-usada">Quando é usada?</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<main>
+
+<div class="breadcrumb">Calendário / Grade do Calendário</div>
+<h1>Grade do Calendário</h1>
+<p class="lead">Área principal onde os períodos e eventos são representados visualmente.</p>
+<h2 id="week">Week</h2>
+<p>Uma <strong>Semana</strong> é uma unidade horizontal da Grade do Calendário. Diferentemente de <em>Week Row</em>, que pertence ao Mini Calendário, <em>Week</em> descreve uma semana na grade principal.</p>
+<h2 id="event-segment">Event Segment</h2>
+<p>Quando um Evento atravessa mais de uma Semana da Grade, sua representação visual é dividida em Segmentos do Evento.</p>
+<div class="callout example"><strong class="label">Exemplo</strong><div class="diagram">Evento
+16 ───────────────────────────────────────── 29
+
+Grade do Calendário
+
+Semana 1
+16 ─────────── 19   ← Segmento do Evento
+
+Semana 2
+20 ───────────────── 26   ← Segmento do Evento
+
+Semana 3
+27 ─────────── 29   ← Segmento do Evento</div>
+<p>É <strong>um único Evento</strong>, representado por três Segmentos do Evento.</p></div>
+<h2 id="event-stack">Event Stack</h2>
+<p>Quando Eventos ocupam regiões sobrepostas, suas representações são organizadas verticalmente em uma Pilha de Eventos.</p>
+<div class="callout example"><strong class="label">Exemplo</strong><div class="diagram">Semana
+
+16 ───────────────────── 20   ← Evento A
+18 ─────────────────── 22     ← Evento B
+19 ─────────────── 21         ← Evento C
+
+Pilha visual:
+
+┌─────────────────────────────┐
+│ Evento A                    │
+├─────────────────────────────┤
+│ Evento B                    │
+├─────────────────────────────┤
+│ Evento C                    │
+└─────────────────────────────┘</div></div>
+
+<footer>CalendarUI documentation · pt-br</footer>
+</main>
+</div>
+</body>
+</html>

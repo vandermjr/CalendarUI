@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Calendário — CalendarUI</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="docs-nav" aria-label="Documentation navigation">
+    <div class="brand">CalendarUI</div>
+    <div class="nav-group nav-group-single">
+        <a class="nav-page " href="../index.html">Introdução</a>
+        <div class="nav-children">
+            <a class="nav-child" href="../index.html#o-que-e-o-calendarui">O que é o CalendarUI?</a>
+            <a class="nav-child" href="../index.html#para-que-serve">Para que serve?</a>
+            <a class="nav-child" href="../index.html#como-a-ferramenta-e-organizada">Como a ferramenta é organizada?</a>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">Calendário</div>
+        <div class="nav-item">
+            <a class="nav-page active" href="mini-calendar.html" aria-current="page">Mini Calendário</a>
+            <div class="nav-children">
+                <a class="nav-child" href="mini-calendar.html#o-que-faz">O que faz?</a>
+                <a class="nav-child" href="mini-calendar.html#week-row">Week Row</a>
+                <a class="nav-child" href="mini-calendar.html#day">Day</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a class="nav-page " href="calendar-grid.html">Grade do Calendário</a>
+            <div class="nav-children">
+                <a class="nav-child" href="calendar-grid.html#week">Week</a>
+                <a class="nav-child" href="calendar-grid.html#event-segment">Event Segment</a>
+                <a class="nav-child" href="calendar-grid.html#event-stack">Event Stack</a>
+            </div>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">Eventos</div>
+        <div class="nav-item">
+            <a class="nav-page " href="../events/event.html">Evento</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../events/event.html#evento-e-segmentos-do-evento">Evento e Segmentos do Evento</a>
+                <a class="nav-child" href="../events/event.html#pilha-de-eventos">Pilha de Eventos</a>
+            </div>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">Modos de Visualização</div>
+        <div class="nav-item">
+            <a class="nav-page " href="../views/expanded-view.html">Visualização Expandida</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../views/expanded-view.html#quando-e-usada">Quando é usada?</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a class="nav-page " href="../views/short-view.html">Visualização Curta</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../views/short-view.html#quando-e-usada">Quando é usada?</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<main>
+
+<div class="breadcrumb">Calendário / Mini Calendário</div>
+<h1>Mini Calendário</h1>
+<p class="lead">Área compacta usada para navegação e seleção de datas.</p>
+<h2 id="o-que-faz">O que faz?</h2>
+<p>O Mini Calendário permite localizar uma data ou selecionar um intervalo de datas. A seleção determina o período que a aplicação está solicitando para visualização.</p>
+<h2 id="week-row">Week Row</h2>
+<p>Uma <strong>Week Row</strong> é uma linha de dias dentro do Mini Calendário. Ela representa uma semana na estrutura compacta de navegação.</p>
+<div class="callout example"><strong class="label">Exemplo</strong><div class="diagram">Mini Calendário
+
+┌────┬────┬────┬────┬────┬────┬────┐
+│ 16 │ 17 │ 18 │ 19 │ 20 │ 21 │ 22 │  ← Week Row
+└────┴────┴────┴────┴────┴────┴────┘</div></div>
+<h2 id="day">Day</h2>
+<p>Um <strong>Day</strong> representa uma data individual dentro do Mini Calendário.</p>
+<div class="callout note"><strong class="label">Observação</strong>A presença de um dia na estrutura visual não significa, por si só, que ele pertence ao intervalo selecionado.</div>
+
+<footer>CalendarUI documentation · pt-br</footer>
+</main>
+</div>
+</body>
+</html>

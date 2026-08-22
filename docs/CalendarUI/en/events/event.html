@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event — CalendarUI</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="docs-nav" aria-label="Documentation navigation">
+    <div class="brand">CalendarUI</div>
+    <div class="nav-group nav-group-single">
+        <a class="nav-page " href="../index.html">Introduction</a>
+        <div class="nav-children">
+            <a class="nav-child" href="../index.html#what-is-calendarui">What is CalendarUI?</a>
+            <a class="nav-child" href="../index.html#what-is-it-for">What is it for?</a>
+            <a class="nav-child" href="../index.html#how-is-the-tool-organized">How is the tool organized?</a>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">Calendar</div>
+        <div class="nav-item">
+            <a class="nav-page " href="../calendar/mini-calendar.html">Mini Calendar</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../calendar/mini-calendar.html#what-does-it-do">What does it do?</a>
+                <a class="nav-child" href="../calendar/mini-calendar.html#week-row">Week Row</a>
+                <a class="nav-child" href="../calendar/mini-calendar.html#day">Day</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a class="nav-page " href="../calendar/calendar-grid.html">Calendar Grid</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../calendar/calendar-grid.html#week">Week</a>
+                <a class="nav-child" href="../calendar/calendar-grid.html#event-segment">Event Segment</a>
+                <a class="nav-child" href="../calendar/calendar-grid.html#event-stack">Event Stack</a>
+            </div>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">Events</div>
+        <div class="nav-item">
+            <a class="nav-page active" href="event.html" aria-current="page">Event</a>
+            <div class="nav-children">
+                <a class="nav-child" href="event.html#event-and-event-segments">Event and Event Segments</a>
+                <a class="nav-child" href="event.html#event-stack">Event Stack</a>
+            </div>
+        </div>
+    </div>
+    <div class="nav-group">
+        <div class="nav-title">View Modes</div>
+        <div class="nav-item">
+            <a class="nav-page " href="../views/expanded-view.html">Expanded View</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../views/expanded-view.html#when-is-it-used">When is it used?</a>
+            </div>
+        </div>
+        <div class="nav-item">
+            <a class="nav-page " href="../views/short-view.html">Short View</a>
+            <div class="nav-children">
+                <a class="nav-child" href="../views/short-view.html#when-is-it-used">When is it used?</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<main>
+
+<div class="breadcrumb">Events / Event</div>
+<h1>Event</h1>
+<p class="lead">Represents a time period supplied by the application to be displayed in the calendar.</p>
+<h2 id="event-and-event-segments">Event and Event Segments</h2>
+<p>An Event can cross several Weeks in the Calendar Grid. Its visual representation is then composed of an Event Segment in each required grid region.</p>
+<div class="callout example"><strong class="label">Example</strong><div class="diagram">One Event:
+
+16 ───────────────────────────────────────── 29
+
+Grid representation:
+
+Week 1    16 ─────────── 19
+Week 2    20 ───────────────── 26
+Week 3    27 ─────────── 29</div></div>
+<h2 id="event-stack">Event Stack</h2>
+<p>Events occupying overlapping regions can be positioned at different levels of the Event Stack so that their representations remain visible.</p>
+<div class="callout important"><strong class="label">Important</strong>An Event Segment is a visual representation of part of an Event. It is not an independent Event.</div>
+
+<footer>CalendarUI documentation · en</footer>
+</main>
+</div>
+</body>
+</html>
